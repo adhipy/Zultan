@@ -12,6 +12,7 @@
 #include <QUrlQuery>
 #endif
 
+#include "o0globals.h"
 #include "o2replyserver.h"
 
 O2ReplyServer::O2ReplyServer(QObject *parent): QTcpServer(parent),
@@ -73,6 +74,11 @@ void O2ReplyServer::onBytesReady() {
             return;
         }
     }
+    if (!uniqueState_.isEmpty() && !queryParams.contains(QString(O2_OAUTH2_STATE))) {
+        qDebug() << "O2ReplyServer::onBytesReady: Malicious or service request";
+        closeServer(socket, true);
+        return; // Malicious or service (e.g. favicon.ico) request
+    }
     qDebug() << "O2ReplyServer::onBytesReady: Query params found, closing server";
     closeServer(socket, true);
     Q_EMIT verificationReceived(queryParams);
@@ -97,7 +103,7 @@ QMap<QString, QString> O2ReplyServer::parseQueryParams(QByteArray *data) {
     QUrlQuery query(getTokenUrl);
     tokens = query.queryItems();
 #endif
-    QMultiMap<QString, QString> queryParams;
+    QMap<QString, QString> queryParams;
     QPair<QString, QString> tokenPair;
     foreach (tokenPair, tokens) {
         // FIXME: We are decoding key and value again. This helps with Google OAuth, but is it mandated by the standard?
@@ -165,4 +171,14 @@ int O2ReplyServer::callbackTries()
 void O2ReplyServer::setCallbackTries(int maxtries)
 {
   maxtries_ = maxtries;
+}
+
+QString O2ReplyServer::uniqueState()
+{
+    return uniqueState_;
+}
+
+void O2ReplyServer::setUniqueState(const QString &state)
+{
+    uniqueState_ = state;
 }
