@@ -51,7 +51,7 @@ TableWidget::TableWidget(QWidget *parent, bool useStandartHeader) :
     mPaginationWidget(new PaginationWidget(this))
 {
     auto mainLayout = new QVBoxLayout();
-    mainLayout->setMargin(0);
+    mainLayout->setContentsMargins(0,0,0,0);
     mainLayout->addWidget(mTableView);
     mActionLayout = new QHBoxLayout();
     mActionLayout->addWidget(mPaginationWidget);

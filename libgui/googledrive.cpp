@@ -73,8 +73,8 @@ void GoogleDrive::uploadFileExec()
     QByteArray data;
     data.reserve(2048000); //2MB
     data.append("--sultan_boundary\nContent-Type: application/json; charset=UTF-8\n\n{ \"name\": \"");
-    data.append("sultan" + QDateTime::currentDateTime().toString("-yyyyMMdd-hhmmss") + "\", \"parents\": [\"");
-    data.append(mFolderId + "\"]}\n\n");
+    data.append("sultan" + QDateTime::currentDateTime().toString("-yyyyMMdd-hhmmss").toLatin1() + "\", \"parents\": [\"");
+    data.append(mFolderId.toLatin1() + "\"]}\n\n");
     data.append("--sultan_boundary\nContent-Type: application/octet-stream\n\n");
     data.append(mDataToUpload);
     data.append("\n\n--sultan_boundary--");
@@ -171,7 +171,7 @@ void GoogleDrive::onDownloadProgress(int /*id*/, qint64 downloaded, qint64 total
 void GoogleDrive::downloadDone(int /*id*/, QNetworkReply::NetworkError /*error*/, QByteArray data)
 {
     auto req = qobject_cast<O2Requestor*>(QObject::sender());
-    auto reply = req->getReply();
+    /*auto reply = req->getReply();
     int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     if(status >= 300 && status < 400) {
         const QString &url = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toString();
@@ -182,7 +182,8 @@ void GoogleDrive::downloadDone(int /*id*/, QNetworkReply::NetworkError /*error*/
         connect(reply, SIGNAL(downloadProgress(qint64,qint64)), SLOT(onDownloadProgress(qint64,qint64)));
     } else {
         emit fileDownloaded(data);
-    }
+    } NONAKTIF */
+    //"temporarily commented, need time to fix it" by ADHIPY
 }
 
 void GoogleDrive::onDownloadProgress(qint64 downloaded, qint64 total)

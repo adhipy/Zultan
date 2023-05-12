@@ -31,7 +31,11 @@ QueryHelper::QueryHelper()
 
 Db *QueryHelper::filter(Db *db, const QVariantMap &data, const QMap<QString, QString> &fieldMap)
 {
+    #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    if(data.contains(QLatin1String("filter")) && data[QLatin1String("filter")].typeId() == QMetaType::QVariantMap) {
+    #else
     if(data.contains(QLatin1String("filter")) && data[QLatin1String("filter")].type() == QVariant::Map) {
+    #endif
         const QVariantMap &d = data[QLatin1String("filter")].toMap();
         QMapIterator<QString, QVariant> i(d);
         while (i.hasNext()) {

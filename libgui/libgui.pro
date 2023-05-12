@@ -32,7 +32,7 @@ CONFIG(static) {
     CONFIG += staticlib
 }
 
-CONFIG += c++11
+CONFIG += c++17
 
 CONFIG(staticlib) {
     DEFINES += GUI_LIBRARY_STATIC

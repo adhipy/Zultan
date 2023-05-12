@@ -81,6 +81,7 @@ private slots:
     void addNewItemClicked();
     void calculateMargin();
     void openSearchItem();
+    void on_UseNewPrice_stateChanged(int arg1);
 };
 
 }

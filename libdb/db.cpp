@@ -133,7 +133,11 @@ Db *Db::where(const QString &value, const QVariant &val)
         mWhere.append(value);
     else {
         mWhere.append(value);
+        #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        if(val.typeId() == QMetaType::QString)
+        #else
         if(val.type() == QVariant::String)
+        #endif
             mWhere.append(QStringLiteral("'") + val.toString() + QStringLiteral("'"));
         else
             mWhere.append(QString::number(val.toInt()));
@@ -355,7 +359,11 @@ bool Db::update(const QString &table, const QVariantMap &data)
     const QList<QString> &keys = data.keys();
     for(int i = 0; i < keys.size(); i++) {
         sql.append(keys.at(i));
+        #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        if(data.value(keys.at(i)).typeId() != QMetaType::UnknownType) {
+        #else
         if(data.value(keys.at(i)).type() != QVariant::Invalid) {
+        #endif
             sql.append(QStringLiteral(" = ?"));
         }
         if(i != keys.size() - 1)

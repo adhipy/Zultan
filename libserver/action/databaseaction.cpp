@@ -166,6 +166,7 @@ QString DatabaseAction::exportData()
     return "success";
 }
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 void DatabaseAction::importData(const QString &fileName, const QString &/*version*/, LibG::Message */*msg*/)
 {
     auto dbtype = Preference::getString(SETTING::DATABASE);
@@ -187,7 +188,7 @@ void DatabaseAction::importData(const QString &fileName, const QString &/*versio
             }
             if(line.startsWith("TABLE|")) {
                 columns.clear();
-                const QVector<QStringRef> &lsplit = line.splitRef("|", QString::SkipEmptyParts);
+                const QList<QStringView> &lsplit = QStringView{line}.split('|', Qt::SkipEmptyParts); /*const QVector<QStringRef> &lsplit = line.splitRef("|", Qt::SkipEmptyParts);  //original code */
                 if(counter >= 0) {
                     counter = -1;
                     mDb->commit();
@@ -200,7 +201,67 @@ void DatabaseAction::importData(const QString &fileName, const QString &/*versio
                         mDb->exec(QString("TRUNCATE TABLE %1").arg(tableName));
                     }
                     if(!lsplit[2].compare(QLatin1String("EMPTY"))) continue;
-                    const QVector<QStringRef> &colsplit = lsplit[2].split(";", QString::SkipEmptyParts);
+                    const QList<QStringView> &colsplit = lsplit[2].split(';',Qt::SkipEmptyParts);
+                    for(auto col : colsplit)
+                        columns.append(col.toString());
+                }
+            } else {
+                const QList<QStringView> &lsplit = QStringView{line}.split(';');
+                QVariantMap d;
+                for(int i = 0; i < columns.size(); i++) {
+                    if(!lsplit[i].isEmpty())
+                        d.insert(columns[i], lsplit[i].toString().replace("#$", ";").replace("#%", "\n"));
+                }
+                if(counter < 0) mDb->beginTransaction();
+                if(!mDb->insert(tableName, d))
+                    qWarning() << "[IMPORT] " << mDb->lastError().text();
+                counter++;
+                if(counter >= 500) {
+                    mDb->commit();
+                    counter = -1;
+                }
+            }
+        }
+        if(counter >= 0) mDb->commit();
+        f.close();
+    }
+}
+#else
+void DatabaseAction::importData(const QString &fileName, const QString &/*version*/, LibG::Message */*msg*/)
+{
+    auto dbtype = Preference::getString(SETTING::DATABASE);
+    QString ver = "013";
+    int counter = -1;
+    QFile f(fileName);
+    if(f.open(QFile::ReadOnly)) {
+        QTextStream stream(&f);
+        QStringList columns;
+        QString tableName;
+        bool versionOK = false;
+        while(!stream.atEnd()) {
+            const QString &line = stream.readLine();
+            if(!versionOK) {
+                const QString &strVersion = line.trimmed();
+                if(strVersion.size() == 3) ver = strVersion;
+                migrateUntil(ver);
+                versionOK = true;
+            }
+            if(line.startsWith("TABLE|")) {
+                columns.clear();
+                const QVector<QStringRef> &lsplit = line.splitRef("|", Qt::SkipEmptyParts);
+                if(counter >= 0) {
+                    counter = -1;
+                    mDb->commit();
+                }
+                if(lsplit.size() == 3) {
+                    tableName = lsplit[1].toString();
+                    if(dbtype == "SQLITE") {
+                        mDb->exec(QString("DELETE FROM %1").arg(tableName));
+                    } else {
+                        mDb->exec(QString("TRUNCATE TABLE %1").arg(tableName));
+                    }
+                    if(!lsplit[2].compare(QLatin1String("EMPTY"))) continue;
+                    const QVector<QStringRef> &colsplit = lsplit[2].split(";", Qt::SkipEmptyParts);
                     for(auto col : colsplit)
                         columns.append(col.toString());
                 }
@@ -225,6 +286,7 @@ void DatabaseAction::importData(const QString &fileName, const QString &/*versio
         f.close();
     }
 }
+#endif
 
 void DatabaseAction::migrateUntil(const QString &version)
 {

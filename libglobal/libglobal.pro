@@ -5,11 +5,15 @@ INSTALLS += target
 
 QT += concurrent core
 
+equals(QT_MAJOR_VERSION, 6) {
+   QT += core5compat
+}
+
 CONFIG(static) {
     CONFIG += staticlib
 }
 
-CONFIG += c++11
+CONFIG += c++17
 
 CONFIG(staticlib) {
     DEFINES += GLOBAL_LIBRARY_STATIC

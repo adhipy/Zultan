@@ -19,7 +19,9 @@
  */
 #include "flashmessagemanager.h"
 #include <QApplication>
-#include <QDesktopWidget>
+//#include <QDesktopWidget>
+#include <QGuiApplication>
+#include <QScreen>
 
 #define SCREEN_Y_MARGIN     20
 #define SCREEN_X_MARGIN     20
@@ -70,8 +72,16 @@ void FlashMessageManager::flashMessageClosed(FlashMessage *flashmessage)
 void FlashMessageManager::rearrangeMessage()
 {
     if(mFlashMessages.isEmpty()) return;
+
+    /*
     auto desktop = qApp->desktop();
     const QRect &rect = desktop->screenGeometry();
+    */
+    // changed by ADHIPY
+    QScreen *pScreen = qGuiApp->primaryScreen();
+    QRect rect = pScreen->availableGeometry();
+
+
     int curY = SCREEN_Y_MARGIN;
     for(auto flash : mFlashMessages) {
         const QSize &s = flash->frameSize();

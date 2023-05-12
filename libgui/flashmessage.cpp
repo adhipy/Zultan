@@ -37,7 +37,7 @@ FlashMessage::FlashMessage(const QString &message, int type, int lifetime, QWidg
     setMaximumWidth(300);
     auto layout = new QVBoxLayout();
     auto label = new QLabel(message, this);
-    layout->setMargin(0);
+    layout->setContentsMargins(0,0,0,0);
     label->setWordWrap(true);
     layout->addWidget(label);
     setLayout(layout);

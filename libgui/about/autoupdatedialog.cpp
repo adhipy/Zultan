@@ -115,6 +115,7 @@ void AutoUpdateDialog::updateClicked()
 void AutoUpdateDialog::downloadDone()
 {
     auto reply = static_cast<QNetworkReply*>(QObject::sender());
+    qint64 pid;
 #ifdef Q_OS_WIN32
     QDir dir(qApp->applicationDirPath());
     dir.mkdir("update");
@@ -135,9 +136,9 @@ void AutoUpdateDialog::downloadDone()
     if(ret == QMessageBox::Yes) {
         QDir dir(qApp->applicationDirPath());
 #ifdef Q_OS_WIN32
-        QProcess::startDetached(dir.absoluteFilePath("zipextractor.exe"));
+        QProcess::startDetached(dir.absoluteFilePath("zipextractor.exe"),{},"",&pid); //"not sure this is correct" by ADHIPY
 #else
-        QProcess::startDetached(dir.absoluteFilePath("zipextractor"));
+        QProcess::startDetached(dir.absoluteFilePath("zipextractor"),{},"",&pid); //"not sure this is correct" by ADHIPY
 #endif
         qApp->quit();
     }

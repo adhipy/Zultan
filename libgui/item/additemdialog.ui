@@ -397,8 +397,7 @@
               </spacer>
              </item>
             </layout>
-            <zorder>groupSinglePrice</zorder>
-            <zorder>verticalSpacer_3</zorder>
+            <zorder>groupSinglePrice</zorder>        
            </widget>
            <widget class="QWidget" name="pageMultiPrice">
             <property name="geometry">

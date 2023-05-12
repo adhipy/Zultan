@@ -140,7 +140,12 @@ void GuiUtil::print(const QString &data)
     const QString &prDevice = Preference::getString(SETTING::PRINTER_CASHIER_DEVICE);
     uint16_t vendorId = (uint16_t)Preference::getInt(SETTING::PRINTER_CASHIER_VENDOR_ID);
     uint16_t produckId = (uint16_t)Preference::getInt(SETTING::PRINTER_CASHIER_PRODUK_ID);
+    #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QtConcurrent::run(&LibPrint::Printer::print, LibPrint::Printer::instance(),
+                      type == PRINT_TYPE::DEVICE ? prDevice : prName, data, type, vendorId, produckId);
+    #else
     QtConcurrent::run(LibPrint::Printer::instance(), &LibPrint::Printer::print,
                       type == PRINT_TYPE::DEVICE ? prDevice : prName, data, type, vendorId, produckId);
-    //LibPrint::Printer::instance()->print(type == PRINT_TYPE::DEVICE ? prDevice : prName, data, type, vendorId, produckId);
+    #endif
+    //LibPrint::Printer::instance()->print(type == PRINT_TYPE::DEVICE ? prDevice : prName, data, type, vendorId, produckId); //check this on original source code , comment by ADHIPY
 }

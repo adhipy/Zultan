@@ -42,5 +42,9 @@ void MainServer::messageReceived(LibG::Message *msg)
 {
     auto watcher = new FutureWatcher();
     connect(watcher, SIGNAL(messageReceived(LibG::Message*)), SIGNAL(messageReady(LibG::Message*)));
-    watcher->setFuture(QtConcurrent::run(mRouter, &Router::handler, *msg));
+    #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        watcher->setFuture(QtConcurrent::run(&Router::handler, mRouter, *msg));
+    #else
+        watcher->setFuture(QtConcurrent::run(mRouter, &Router::handler, *msg));
+#endif
 }

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>365</width>
-    <height>185</height>
+    <height>206</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -58,6 +58,12 @@
      </item>
      <item row="1" column="1">
       <widget class="QLabel" name="labelPayment">
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>-1</pointsize>
+        </font>
+       </property>
        <property name="styleSheet">
         <string notr="true">background: white; font-size: 20px;</string>
        </property>
@@ -74,8 +80,16 @@
      </item>
      <item row="2" column="1">
       <widget class="QLabel" name="labelChange">
+       <property name="font">
+        <font>
+         <pointsize>20</pointsize>
+         <italic>false</italic>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="styleSheet">
-        <string notr="true">background: white; font-size: 20px;</string>
+        <string notr="true">background: white; font-size: 20px;
+font: 600 20pt &quot;Segoe UI&quot;;</string>
        </property>
        <property name="text">
         <string>TextLabel</string>

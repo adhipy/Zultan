@@ -19,6 +19,9 @@
  */
 #include "escptable.h"
 #include "print_constant.h"
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    #include <QStringRef>
+#endif
 
 using namespace LibPrint;
 

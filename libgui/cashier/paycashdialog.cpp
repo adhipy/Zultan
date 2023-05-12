@@ -49,7 +49,8 @@ void PayCashDialog::fill(double total)
     mTotal = total;
     ui->labelTotal->setText(Preference::formatMoney(total));
     //ui->lineEdit->setText(QString::number(total, 'f', Preference::getInt(SETTING::LOCALE_DECIMAL)));
-    ui->lineEdit->setValue(total);
+    //ui->lineEdit->setValue(total);
+    ui->lineEdit->clear();
     ui->pushPay->setEnabled(true);
     ui->pushSave->setEnabled(true);
     ui->lineEdit->selectAll();
@@ -61,19 +62,32 @@ void PayCashDialog::saveTransaction()
     if(Util::roundDouble(payment) < Util::roundDouble(mTotal)) {
         QMessageBox::critical(this, tr("Error Payment"), tr("Payment must bigger or equal to total"));
         return;
+        // problem with this 'return' is it only exit from this function, not from payClicked()
+        // or saveClicked. so this kind of error checking is not working
     }
-    ui->pushPay->setEnabled(false);
-    ui->pushSave->setEnabled(false);
+    ui->pushPay->setEnabled(false);  //to prevent multiple click
+    ui->pushSave->setEnabled(false);  //to prevent multiple click
 }
 
 void PayCashDialog::payClicked()
 {
-    saveTransaction();
+    saveTransaction();    //see note at saveTransaction();
+    double payment = ui->lineEdit->value();
+    if(Util::roundDouble(payment) < Util::roundDouble(mTotal)) {
+        QMessageBox::critical(this, tr("Error Payment"), tr("Payment must bigger or equal to total"));
+        return;
+    }
     emit requestPay(PAYMENT::CASH, ui->lineEdit->value(), 0);
 }
 
 void PayCashDialog::saveClicked()
 {
-    saveTransaction();
+    saveTransaction();     //see note at saveTransaction();
+
+    double payment = ui->lineEdit->value();
+    if(Util::roundDouble(payment) < Util::roundDouble(mTotal)) {
+        QMessageBox::critical(this, tr("Error Payment"), tr("Payment must bigger or equal to total"));
+        return;
+    }
     emit requestPay(PAYMENT::CASH, ui->lineEdit->value(), 1);
 }

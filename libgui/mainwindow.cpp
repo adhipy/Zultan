@@ -240,9 +240,15 @@ void MainWindow::setupConnection()
 {
     connect(mLoginDialog, SIGNAL(loginSuccess()), SLOT(loginSuccess()));
     new QShortcut(QKeySequence(Qt::Key_F11), this, SLOT(showWindowFullScreen()));
+    #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0) //added by ADHIPY
+    new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_W), this, SLOT(closeCurrentTab()));
+    new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Tab), this, SLOT(nextTab()));
+    new QShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_Tab), this, SLOT(prevTab()));
+    #else
     new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this, SLOT(closeCurrentTab()));
     new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Tab), this, SLOT(nextTab()));
     new QShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Tab), this, SLOT(prevTab()));
+    #endif
     connect(ui->actionSetting, SIGNAL(triggered(bool)), SLOT(openSetting()));
     connect(ui->actionAbout_Qt, SIGNAL(triggered(bool)), qApp, SLOT(aboutQt()));
     connect(ui->action_About, SIGNAL(triggered(bool)), SLOT(openAbout()));

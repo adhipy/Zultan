@@ -23,6 +23,10 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    #include <QBinaryJson>
+#endif
+
 using namespace LibG;
 
 Message::Message()
@@ -161,13 +165,24 @@ QByteArray Message::toByteArray()
 {
     const QJsonObject &root = toJsonObject();
     QJsonDocument doc(root);
-    return qCompress(doc.toBinaryData());
+    #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        return qCompress(QBinaryJson::toBinaryData(doc));
+    #else
+    return qCompress(doc.toJson(QJsonDocument::Indented));
+    #endif
 }
 
 void Message::fromByteArray(const QByteArray &ba)
 {
-    QJsonDocument doc = QJsonDocument::fromBinaryData(qUncompress(ba));
-    fromJsonDoc(doc);
+    #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        QJsonDocument doc = QBinaryJson::fromBinaryData(qUncompress(ba));
+        fromJsonDoc(doc);
+        //this code using Core5compat & header QBinaryJson by ADHIPY
+    #else
+        QJsonDocument doc = QJsonDocument::fromJson(qUncompress(ba));
+        fromJsonDoc(doc);
+        //this code based on QT 6.5.0 documentation by ADHIPY
+    #endif
 }
 
 void Message::fromJsonDoc(const QJsonDocument &jsonDoc)

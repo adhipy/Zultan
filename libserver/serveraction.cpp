@@ -158,6 +158,7 @@ LibG::Message ServerAction::del(LibG::Message *msg)
 
 Message ServerAction::restoreDelete(Message *msg)
 {
+    QDateTime datetime;
     LibG::Message message(msg);
     if(hasFlag(USE_TRANSACTION) && mDb->isSupportTransaction())
         mDb->beginTransaction();
@@ -168,8 +169,13 @@ Message ServerAction::restoreDelete(Message *msg)
     }
     mDb->where(mIdField % " = ", msg->data(mIdField));
     if(hasFlag(SOFT_DELETE)) {
+        #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        if(!mDb->update(mTableName, QVariantMap{{"deleted_at", QVariant::fromValue(&datetime)}})) { //not sure this is correct by ADHIPY
+            message.setError(mDb->lastError().text());
+        #else
         if(!mDb->update(mTableName, QVariantMap{{"deleted_at", QVariant(QVariant::DateTime)}})) {
             message.setError(mDb->lastError().text());
+        #endif
         }
     }
     if(hasFlag(AFTER_RESTORE)) {

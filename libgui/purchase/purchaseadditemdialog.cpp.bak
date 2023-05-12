@@ -197,7 +197,11 @@ void PurchaseAddItemDialog::save()
     data.insert("discount_formula", ui->lineDiscountFormula->text());
     data.insert("discount", mDiscount);
     data.insert("final", mTotal - (ui->doubleCount->value() * mDiscount));
-    data.insert("buy_price", ui->doubleBuyPrice->value());
+    if(ui->UseNewPrice->isChecked()) {
+        data.insert("buy_price", ui->doublePrice->value());
+    } else {
+        data.insert("buy_price", ui->doubleBuyPrice->value());
+    }
     if(mSellPrice != ui->doubleSellPrice->value()) {
         data.insert("sell_price", ui->doubleSellPrice->value());
         data.insert("sell_count", mSellCount);
@@ -278,21 +282,35 @@ void PurchaseAddItemDialog::calculateDiscount()
 void PurchaseAddItemDialog::calculateBuyPriceSuggestion()
 {
     double single = ui->doublePrice->value() - mDiscount;
-    if(ui->UseNewPrice->isChecked()) {
-        ui->doubleBuyPrice->setValue(ui->doublePrice->value() - mDiscount);
-    } else {
-        if(mCurrentStock >= 0) {
-            if(mCurrentStock == 0) {
-                ui->doubleBuyPrice->setValue(single);
-            } else {
-                double val = ((mCurrentStock * mBuyPrice) + (single * ui->doubleCount->value())) / (mCurrentStock + ui->doubleCount->value());
-                ui->doubleBuyPrice->setValue(val);
-            }
+    if(mCurrentStock >= 0) {     // in original  "if(mId <= 0)"  i think this is incorrect
+        if(mCurrentStock == 0) {
+            ui->doubleBuyPrice->setValue(single);
         } else {
-            float diff = ui->doubleCount->value() + mCurrentStock;
-            double val = ((diff * single) -  (abs(mCurrentStock)*(mSellPrice-single))) / diff;
+            double val = ((mCurrentStock * mBuyPrice) + (single * ui->doubleCount->value())) / (mCurrentStock + ui->doubleCount->value());
             ui->doubleBuyPrice->setValue(val);
         }
+    } else {
+        // next code seem odd, maybe something wrong with the formula
+        /*
+        float diff = ui->doubleCount->value() - mOldCount;
+        double val = ((mCurrentStock * mBuyPrice) + (single * diff)) / (mCurrentStock + diff);
+        ui->doubleBuyPrice->setValue(val);
+        */
+
+        float diff = ui->doubleCount->value() + mCurrentStock;
+        double val = ((diff * single) -  (abs(mCurrentStock)*(mSellPrice-single))) / diff;
+        ui->doubleBuyPrice->setValue(val);
+
+        //SIMPLE DEBUG
+        //QString showvalue = QString("diff = %1\nsingle = %2\nabs(mCurrentStock) = %3\nmBuyPrice = %4\nmDiscount = %5\nmOldCount = %6\nmSellPrice = %7").arg(diff).arg(single).arg(mCurrentStock).arg(mBuyPrice).arg(mDiscount).arg(mOldCount).arg(mSellPrice);
+
+        /*
+        QMessageBox msgBox;
+        msgBox.setText(showvalue);
+        msgBox.exec();
+        */
+
+        // ui->doubleBuyPrice->setValue(single); // use this for temporary solution
     }
 }
 
@@ -330,9 +348,3 @@ void PurchaseAddItemDialog::openSearchItem()
         barcodeDone();
     }
 }
-
-void PurchaseAddItemDialog::on_UseNewPrice_stateChanged(int arg1)
-{
-    calculateBuyPriceSuggestion();
-}
-

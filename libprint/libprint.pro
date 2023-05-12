@@ -2,6 +2,10 @@ include(../libglobal/libglobal.pri)
 
 QT += printsupport
 
+equals(QT_MAJOR_VERSION, 6) {
+   QT += core5compat
+}
+
 TEMPLATE = lib
 TARGET = print
 target.path = $${LIBDIR}
@@ -11,7 +15,7 @@ CONFIG(static) {
     CONFIG += staticlib
 }
 
-CONFIG += c++11
+CONFIG += c++17
 
 CONFIG(staticlib) {
     DEFINES += PRINT_LIBRARY_STATIC

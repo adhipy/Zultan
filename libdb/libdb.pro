@@ -11,7 +11,7 @@ CONFIG(static) {
     CONFIG += staticlib
 }
 
-CONFIG += c++11
+CONFIG += c++17
 
 CONFIG(staticlib) {
     DEFINES += DB_LIBRARY_STATIC

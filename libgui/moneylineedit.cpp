@@ -59,7 +59,7 @@ void MoneyLineEdit::textHasChanged(const QString &value)
     blockSignals(true);
     QString str = value;
     QLocale locale;
-    auto split = str.splitRef(locale.decimalPoint());
+    auto split = QStringView{str}.split(locale.decimalPoint());  /*auto split = str.splitRef(locale.decimalPoint()); //this original line, modified by ADHIPY */
     if(locale.decimalPoint() == QChar(',')) {
         const QString &thausand = locale.toString(locale.toDouble(split[0].toString().replace(".", "")), 'f', 0);
         if(split.length() == 1) {

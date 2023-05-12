@@ -1,9 +1,10 @@
 TEMPLATE  = subdirs
 CONFIG   += ordered
 
+
+
 !contains(CONFIG, SINGLEBIN) {
     SUBDIRS += \
-        external_library/pillow/pillowcore \
         libglobal \
         libdb \
         libserver
