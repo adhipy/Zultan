@@ -1,6 +1,6 @@
 include(../libglobal/libglobal.pri)
 
-QT += printsupport
+QT += printsupport serialport
 
 equals(QT_MAJOR_VERSION, 6) {
    QT += core5compat
@@ -53,6 +53,8 @@ macx {
 }
 
 SOURCES += \
+    customerdisplay.cpp \
+    customerdisplaymanager.cpp \
     escp.cpp \
     printer.cpp \
     escptable.cpp \
@@ -60,6 +62,8 @@ SOURCES += \
     usb.cpp
 
 HEADERS += \
+    customerdisplay.h \
+    customerdisplaymanager.h \
     print_constant.h \
     print_global.h \
     escp.h \

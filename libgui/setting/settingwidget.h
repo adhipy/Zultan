@@ -22,9 +22,9 @@
 
 #include "messagehandler.h"
 #include "usb.h"
-#include <QWidget>
-#include <QMap>
 #include <QLocale>
+#include <QMap>
+#include <QWidget>
 
 class QComboBox;
 
@@ -34,15 +34,14 @@ class SettingWidget;
 
 namespace LibGUI {
 
-class SettingWidget : public QWidget, public LibG::MessageHandler
-{
+class SettingWidget : public QWidget, public LibG::MessageHandler {
     Q_OBJECT
 
-public:
+  public:
     SettingWidget(LibG::MessageBus *bus, QWidget *parent = nullptr);
     ~SettingWidget();
 
-private:
+  private:
     Ui::SettingWidget *ui;
     QMap<QString, QLocale::Language> mLocaleLanguage;
     QMap<QString, QLocale::Country> mLocaleCountry;
@@ -55,8 +54,9 @@ private:
     void setCurrentCombo(QComboBox *combo, QVariant value);
     void updateFromDBConfig(const QVariantList &data);
     void saveToDbConfig();
+    void setupCustomerDisplay();
 
-private slots:
+  private slots:
     void signChanged();
     void cashierPrintTypeChanged();
     void saveClicked();
@@ -64,10 +64,11 @@ private slots:
     void printTestClicked();
     void localeLanguageChanged();
     void checkWidget();
+    void onCustomerDisplayClicked();
 
-protected:
+  protected:
     void messageReceived(LibG::Message *msg) override;
 };
 
-}
+} // namespace LibGUI
 #endif // SETTINGWIDGET_H
