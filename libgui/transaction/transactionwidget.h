@@ -21,8 +21,8 @@
 #define TRANSACTIONWIDGET_H
 
 #include "messagehandler.h"
-#include <QModelIndexList>
 #include <QWidget>
+#include <QModelIndexList>
 
 namespace Ui {
 class NormalWidget;
@@ -33,16 +33,17 @@ namespace LibGUI {
 class TableWidget;
 class TileWidget;
 
-class TransactionWidget : public QWidget, public LibG::MessageHandler {
+class TransactionWidget : public QWidget, public LibG::MessageHandler
+{
     Q_OBJECT
-  public:
+public:
     TransactionWidget(LibG::MessageBus *bus, QWidget *parent = nullptr);
 
-  protected:
+protected:
     void messageReceived(LibG::Message *msg) override;
     void showEvent(QShowEvent *e) override;
 
-  private:
+private:
     Ui::NormalWidget *ui;
     TableWidget *mTableWidget;
     TileWidget *mTileIncome;
@@ -52,7 +53,7 @@ class TransactionWidget : public QWidget, public LibG::MessageHandler {
     TileWidget *mTileProfit;
     bool isShowed = false;
 
-  private slots:
+private slots:
     void refreshSummary();
     void addClicked();
     void editClicked(const QModelIndex &index);
@@ -60,5 +61,5 @@ class TransactionWidget : public QWidget, public LibG::MessageHandler {
     void exportClicked();
 };
 
-} // namespace LibGUI
+}
 #endif // TRANSACTIONWIDGET_H

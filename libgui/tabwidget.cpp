@@ -19,19 +19,25 @@
  */
 #include "tabwidget.h"
 #include "tabcloseablewidget.h"
-#include <QApplication>
-#include <QDebug>
 #include <QLabel>
+#include <QVBoxLayout>
 #include <QPixmap>
 #include <QShortcut>
-#include <QVBoxLayout>
+#include <QApplication>
+#include <QDebug>
 
 using namespace LibGUI;
 
-TabWidget::TabWidget(QWidget *parent) : TabWidget(Root, parent) {}
+TabWidget::TabWidget(QWidget *parent):
+    TabWidget(Root, parent)
+{
+}
 
-TabWidget::TabWidget(int type, QWidget *parent) : QTabWidget(parent), mType(type) {
-    if (mType == Root) {
+TabWidget::TabWidget(int type, QWidget *parent):
+    QTabWidget(parent),
+    mType(type)
+{
+    if(mType == Root) {
         auto lay = new QVBoxLayout(this);
         mLabel = new QLabel();
         QPixmap px(QLatin1String(":/images/icon_512.png"));
@@ -39,7 +45,7 @@ TabWidget::TabWidget(int type, QWidget *parent) : QTabWidget(parent), mType(type
         mLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
         lay->addWidget(mLabel);
         setLayout(lay);
-    } else if (mType == Purchase) {
+    } else if(mType == Purchase) {
         setTabPosition(QTabWidget::West);
         new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_PageDown), this, SLOT(nextTab()));
         new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_PageUp), this, SLOT(prevTab()));
@@ -54,60 +60,63 @@ TabWidget::TabWidget(int type, QWidget *parent) : QTabWidget(parent), mType(type
     setTabBarAutoHide(true);
 }
 
-void TabWidget::tbnAddTab(QWidget *widget, const QString &name) {
-    if (mType == Root && mLabel->isVisible())
+void TabWidget::tbnAddTab(QWidget *widget, const QString &name)
+{
+    if(mType == Root && mLabel->isVisible())
         mLabel->setVisible(false);
     addTab(widget, name);
     setCurrentIndex(indexOf(widget));
 }
 
-void TabWidget::tbnAddTab(QWidget *widget, const QString &name, const QString &iconName) {
-    if (mType == Root && mLabel->isVisible())
+void TabWidget::tbnAddTab(QWidget *widget, const QString &name, const QString &iconName)
+{
+    if(mType == Root && mLabel->isVisible())
         mLabel->setVisible(false);
     addTab(widget, QIcon(iconName), name);
     setCurrentIndex(indexOf(widget));
 }
 
-void TabWidget::tbnRemoveTab(int index) {
-    if (mType != Root && index == 0)
-        return;
-    if (mType == Root) {
-        TabWidget *w = dynamic_cast<TabWidget *>(widget(index));
-        if (w != nullptr && w->mType == Cashier) {
-            for (int i = w->count() - 1; i >= 0; i--) {
-                auto tc = dynamic_cast<TabCloseableWidget *>(w->widget(i));
-                if (tc != nullptr) {
+void TabWidget::tbnRemoveTab(int index)
+{
+    if(mType != Root && index == 0) return;
+    if(mType == Root) {
+        TabWidget *w = dynamic_cast<TabWidget*>(widget(index));
+        if(w != nullptr && w->mType == Cashier) {
+            for(int i = w->count() - 1; i >= 0; i--) {
+                auto tc = dynamic_cast<TabCloseableWidget*>(w->widget(i));
+                if(tc != nullptr) {
                     w->setCurrentIndex(i);
                     qApp->processEvents();
-                    if (!tc->requestClose()) {
+                    if(!tc->requestClose()) {
                         return;
                     }
                     w->tbnRemoveTab(i);
                 }
             }
         }
-    } else if (mType == Cashier) {
-        auto tc = dynamic_cast<TabCloseableWidget *>(widget(index));
-        if (tc != nullptr && !tc->requestClose())
-            return;
+    } else if(mType == Cashier) {
+        auto tc = dynamic_cast<TabCloseableWidget*>(widget(index));
+        if(tc != nullptr && !tc->requestClose()) return;
     }
     widget(index)->deleteLater();
     removeTab(index);
-    if (count() == 0 && mType == Root)
+    if(count() == 0 && mType == Root)
         mLabel->setVisible(true);
 }
 
-void TabWidget::tbnRemoveTab() {
-    auto w = static_cast<QWidget *>(QObject::sender());
-    for (int i = 0; i < count(); i++)
-        if (widget(i) == w)
+void TabWidget::tbnRemoveTab()
+{
+    auto w = static_cast<QWidget*>(QObject::sender());
+    for(int i = 0; i < count(); i++)
+        if(widget(i) == w)
             tbnRemoveTab(i);
 }
 
-bool TabWidget::isTabAvailable(std::function<bool(QWidget *)> func) {
-    for (int i = 0; i < count(); i++) {
+bool TabWidget::isTabAvailable(std::function<bool(QWidget*)> func)
+{
+    for(int i = 0; i < count(); i++) {
         bool ok = func(widget(i));
-        if (ok) {
+        if(ok) {
             setCurrentIndex(indexOf(widget(i)));
             return true;
         }
@@ -115,35 +124,36 @@ bool TabWidget::isTabAvailable(std::function<bool(QWidget *)> func) {
     return false;
 }
 
-void TabWidget::closeAllTabAndFree() {
-    for (int i = count() - 1; i >= 0; i--) {
+void TabWidget::closeAllTabAndFree()
+{
+    for(int i = count() - 1; i >= 0; i--) {
         auto w = widget(i);
         w->deleteLater();
         tbnRemoveTab(i);
     }
 }
 
-void TabWidget::newTab() {
-    if (mNewWidgetFunc != nullptr) {
+void TabWidget::newTab()
+{
+    if(mNewWidgetFunc != nullptr) {
         addTab(mNewWidgetFunc(), QString("#%1").arg(mCounter++, 3, 10, QChar('0')));
         setCurrentIndex(count() - 1);
     }
 }
 
-void TabWidget::nextTab() {
-    if (count() == 1)
-        return;
+void TabWidget::nextTab()
+{
+    if(count() == 1) return;
     int cur = currentIndex() + 1;
-    if (cur >= count())
-        cur = 0;
+    if(cur >= count()) cur = 0;
     setCurrentIndex(cur);
 }
 
-void TabWidget::prevTab() {
-    if (count() == 1)
-        return;
+void TabWidget::prevTab()
+{
+    if(count() == 1) return;
     int cur = currentIndex() - 1;
-    if (cur < 0)
-        cur = count() - 1;
+    if(cur < 0) cur = count() - 1;
     setCurrentIndex(cur);
 }
+

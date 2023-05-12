@@ -36,18 +36,19 @@ namespace LibGUI {
 class BrowserDialog;
 class GoogleDrive;
 
-class ImportExportDatabaseDialog : public QDialog, public LibG::MessageHandler {
+class ImportExportDatabaseDialog : public QDialog, public LibG::MessageHandler
+{
     Q_OBJECT
 
-  public:
+public:
     ImportExportDatabaseDialog(LibG::MessageBus *bus, QWidget *parent = nullptr);
     ~ImportExportDatabaseDialog() override;
 
-  protected:
+protected:
     void messageReceived(LibG::Message *msg) override;
     bool eventFilter(QObject *obj, QEvent *event) override;
 
-  private:
+private:
     Ui::ImportExportDatabaseDialog *ui;
     bool mIsGDrive = false;
     BrowserDialog *mBrowser;
@@ -60,7 +61,7 @@ class ImportExportDatabaseDialog : public QDialog, public LibG::MessageHandler {
 
     void uploadFile(const QByteArray &data);
 
-  private slots:
+private slots:
     void exportFile();
     void exportGDrive();
     void importFile();
@@ -75,5 +76,5 @@ class ImportExportDatabaseDialog : public QDialog, public LibG::MessageHandler {
     void requestFinished(QNetworkReply *reply);
 };
 
-} // namespace LibGUI
+}
 #endif // IMPORTEXPORTDATABASEDIALOG_H

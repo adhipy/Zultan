@@ -23,7 +23,10 @@
 
 using namespace LibGUI;
 
-CashierHelpDialog::CashierHelpDialog(QWidget *parent) : QDialog(parent), ui(new Ui::CashierHelpDialog) {
+CashierHelpDialog::CashierHelpDialog(QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::CashierHelpDialog)
+{
     ui->setupUi(this);
     ui->tableWidget->setColumnCount(2);
     ui->tableWidget->verticalHeader()->hide();
@@ -56,9 +59,13 @@ CashierHelpDialog::CashierHelpDialog(QWidget *parent) : QDialog(parent), ui(new 
     addRow("PgDn", tr("Edit last inserted item"));
 }
 
-CashierHelpDialog::~CashierHelpDialog() { delete ui; }
+CashierHelpDialog::~CashierHelpDialog()
+{
+    delete ui;
+}
 
-void CashierHelpDialog::addRow(const QString &key, const QString &detail) {
+void CashierHelpDialog::addRow(const QString &key, const QString &detail)
+{
     int row = ui->tableWidget->rowCount();
     ui->tableWidget->setRowCount(row + 1);
     ui->tableWidget->setItem(row, 0, new QTableWidgetItem(key));

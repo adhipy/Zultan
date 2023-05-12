@@ -18,27 +18,30 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "rewardwidget.h"
-#include "db_constant.h"
-#include "flashmessagemanager.h"
+#include "ui_rewardsetting.h"
+#include "horizontalheader.h"
+#include "tablewidget.h"
+#include "tablemodel.h"
+#include "tableitem.h"
 #include "global_constant.h"
+#include "message.h"
+#include "tableview.h"
+#include "usersession.h"
 #include "guiutil.h"
 #include "headerwidget.h"
-#include "horizontalheader.h"
-#include "message.h"
+#include "db_constant.h"
+#include "flashmessagemanager.h"
 #include "rewardadddialog.h"
 #include "settingpoinadddialog.h"
-#include "tableitem.h"
-#include "tablemodel.h"
-#include "tableview.h"
-#include "tablewidget.h"
-#include "ui_rewardsetting.h"
-#include "usersession.h"
 #include <QMessageBox>
 
 using namespace LibGUI;
 using namespace LibG;
 
-RewardWidget::RewardWidget(LibG::MessageBus *bus, QWidget *parent) : QWidget(parent), ui(new Ui::RewardSetting) {
+RewardWidget::RewardWidget(LibG::MessageBus *bus, QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::RewardSetting)
+{
     setMessageBus(bus);
     ui->setupUi(this);
     ui->tableExchange->initCrudButton();
@@ -74,9 +77,10 @@ RewardWidget::RewardWidget(LibG::MessageBus *bus, QWidget *parent) : QWidget(par
     connect(ui->tablePoin, SIGNAL(deleteClicked(QModelIndexList)), SLOT(deletePoinClicked(QModelIndexList)));
 }
 
-void RewardWidget::messageReceived(LibG::Message *msg) {
-    if (msg->isTypeCommand(MSG_TYPE::REWARD, MSG_COMMAND::DEL)) {
-        if (msg->isSuccess()) {
+void RewardWidget::messageReceived(LibG::Message *msg)
+{
+    if(msg->isTypeCommand(MSG_TYPE::REWARD, MSG_COMMAND::DEL)) {
+        if(msg->isSuccess()) {
             FlashMessageManager::showMessage(tr("Reward deleted successfully"));
             ui->tableExchange->getModel()->refresh();
         } else {
@@ -85,17 +89,18 @@ void RewardWidget::messageReceived(LibG::Message *msg) {
     }
 }
 
-void RewardWidget::addExchangeClicked() {
+void RewardWidget::addExchangeClicked()
+{
     RewardAddDialog dialog(mMessageBus, this);
     dialog.reset();
     dialog.exec();
     ui->tableExchange->getModel()->refresh();
 }
 
-void RewardWidget::updateExchangeClicked(const QModelIndex &index) {
-    if (!index.isValid())
-        return;
-    auto item = static_cast<TableItem *>(index.internalPointer());
+void RewardWidget::updateExchangeClicked(const QModelIndex &index)
+{
+    if(!index.isValid()) return;
+    auto item = static_cast<TableItem*>(index.internalPointer());
     RewardAddDialog dialog(mMessageBus, this);
     dialog.reset();
     dialog.fill(item->data());
@@ -103,14 +108,14 @@ void RewardWidget::updateExchangeClicked(const QModelIndex &index) {
     ui->tableExchange->getModel()->refresh();
 }
 
-void RewardWidget::deleteExchangeClicked(const QModelIndexList &index) {
-    if (index.empty())
-        return;
+void RewardWidget::deleteExchangeClicked(const QModelIndexList &index)
+{
+    if(index.empty()) return;
     int ret = QMessageBox::question(this, tr("Confirmation"), tr("Are you sure to delete?"));
-    if (ret == QMessageBox::Yes) {
+    if(ret == QMessageBox::Yes) {
         QList<QVariant> ids;
-        for (int i = 0; i < index.size(); i++) {
-            auto item = static_cast<TableItem *>(index[i].internalPointer());
+        for(int i = 0; i < index.size(); i++) {
+            auto item = static_cast<TableItem*>(index[i].internalPointer());
             ids.append(item->id);
         }
         Message msg(MSG_TYPE::REWARD, MSG_COMMAND::DEL);
@@ -119,17 +124,18 @@ void RewardWidget::deleteExchangeClicked(const QModelIndexList &index) {
     }
 }
 
-void RewardWidget::addPoinClicked() {
+void RewardWidget::addPoinClicked()
+{
     SettingPoinAddDialog dialog(mMessageBus, this);
     dialog.reset();
     dialog.exec();
     ui->tablePoin->getModel()->refresh();
 }
 
-void RewardWidget::updatePoinClicked(const QModelIndex &index) {
-    if (!index.isValid())
-        return;
-    auto item = static_cast<TableItem *>(index.internalPointer());
+void RewardWidget::updatePoinClicked(const QModelIndex &index)
+{
+    if(!index.isValid()) return;
+    auto item = static_cast<TableItem*>(index.internalPointer());
     SettingPoinAddDialog dialog(mMessageBus, this);
     dialog.reset();
     dialog.fill(item->data());
@@ -137,14 +143,14 @@ void RewardWidget::updatePoinClicked(const QModelIndex &index) {
     ui->tablePoin->getModel()->refresh();
 }
 
-void RewardWidget::deletePoinClicked(const QModelIndexList &index) {
-    if (index.empty())
-        return;
+void RewardWidget::deletePoinClicked(const QModelIndexList &index)
+{
+    if(index.empty()) return;
     int ret = QMessageBox::question(this, tr("Confirmation"), tr("Are you sure to delete?"));
-    if (ret == QMessageBox::Yes) {
+    if(ret == QMessageBox::Yes) {
         QList<QVariant> ids;
-        for (int i = 0; i < index.size(); i++) {
-            auto item = static_cast<TableItem *>(index[i].internalPointer());
+        for(int i = 0; i < index.size(); i++) {
+            auto item = static_cast<TableItem*>(index[i].internalPointer());
             ids.append(item->id);
         }
         Message msg(MSG_TYPE::REWARD_POIN, MSG_COMMAND::DEL);

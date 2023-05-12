@@ -24,10 +24,11 @@
 
 namespace LibServer {
 
-class SuplierAction : public ServerAction {
-  public:
+class SuplierAction : public ServerAction
+{
+public:
     SuplierAction();
 };
 
-} // namespace LibServer
+}
 #endif // SUPLIERACTION_H

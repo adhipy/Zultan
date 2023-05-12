@@ -24,7 +24,8 @@
 
 namespace LibGUI {
 
-struct PurchaseItem {
+struct PurchaseItem
+{
     int id;
     float count;
     double price;
@@ -36,6 +37,6 @@ struct PurchaseItem {
     void fill(const QVariantMap &data);
 };
 
-} // namespace LibGUI
+}
 
 #endif // PURCHASEITEM_H

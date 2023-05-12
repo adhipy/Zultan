@@ -5,13 +5,14 @@
 
 namespace LibServer {
 
-class ConfigAction : public ServerAction {
-  public:
+class ConfigAction: public ServerAction
+{
+public:
     ConfigAction();
 
-  protected:
+protected:
     LibG::Message insertOrUpdate(LibG::Message *msg);
 };
 
-} // namespace LibServer
+}
 #endif // CONFIGACTION_H

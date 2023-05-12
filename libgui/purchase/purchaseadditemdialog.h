@@ -30,21 +30,22 @@ class PurchaseAddItemDialog;
 
 namespace LibGUI {
 
-class PurchaseAddItemDialog : public QDialog, public LibG::MessageHandler {
+class PurchaseAddItemDialog : public QDialog, public LibG::MessageHandler
+{
     Q_OBJECT
 
-  public:
+public:
     PurchaseAddItemDialog(LibG::MessageBus *bus, int purchaseId, QWidget *parent = nullptr);
     ~PurchaseAddItemDialog();
     void reset();
     void fill(const QVariantMap &data);
 
-  protected:
+protected:
     void messageReceived(LibG::Message *msg) override;
     void showEvent(QShowEvent *event) override;
     void closeEvent(QCloseEvent *event) override;
 
-  private:
+private:
     Ui::PurchaseAddItemDialog *ui;
     int mPurchaseId = 0;
     int mId = 0;
@@ -65,11 +66,11 @@ class PurchaseAddItemDialog : public QDialog, public LibG::MessageHandler {
     void save();
     void getPurchaseItem(const QString &barcode);
 
-  signals:
+signals:
     void addSuccess();
     void updateSuccess(QVariant id);
 
-  private slots:
+private slots:
     void barcodeDone();
     void saveAgainClicked();
     void saveClicked();
@@ -83,5 +84,5 @@ class PurchaseAddItemDialog : public QDialog, public LibG::MessageHandler {
     void on_UseNewPrice_stateChanged(int arg1);
 };
 
-} // namespace LibGUI
+}
 #endif // PURCHASEADDITEMDIALOG_H

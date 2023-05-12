@@ -30,10 +30,11 @@ class AddPriceDialog;
 
 namespace LibGUI {
 
-class AddPriceDialog : public QDialog {
+class AddPriceDialog : public QDialog
+{
     Q_OBJECT
 
-  public:
+public:
     AddPriceDialog(bool local, QWidget *parent = nullptr);
     ~AddPriceDialog();
     void reset();
@@ -42,7 +43,7 @@ class AddPriceDialog : public QDialog {
     inline QVariantMap getData() const { return mData; }
     inline bool isOk() { return mIsOk; }
 
-  private:
+private:
     Ui::AddPriceDialog *ui;
     int mId = 0;
     bool mIsLocal;
@@ -50,13 +51,13 @@ class AddPriceDialog : public QDialog {
     bool mIsOk = false;
     QVariantMap mData;
 
-  signals:
+signals:
     void success();
 
-  private slots:
+private slots:
     void saveClicked();
     void updateDiscount();
 };
 
-} // namespace LibGUI
+}
 #endif // ADDPRICEDIALOG_H

@@ -21,8 +21,8 @@
 #define REWARDWIDGET_H
 
 #include "messagehandler.h"
-#include <QModelIndexList>
 #include <QWidget>
+#include <QModelIndexList>
 
 namespace Ui {
 class RewardSetting;
@@ -32,18 +32,19 @@ namespace LibGUI {
 
 class TableWidget;
 
-class RewardWidget : public QWidget, public LibG::MessageHandler {
+class RewardWidget : public QWidget, public LibG::MessageHandler
+{
     Q_OBJECT
-  public:
+public:
     RewardWidget(LibG::MessageBus *bus, QWidget *parent = nullptr);
 
-  private:
+private:
     Ui::RewardSetting *ui;
 
-  protected:
+protected:
     void messageReceived(LibG::Message *msg) override;
 
-  private slots:
+private slots:
     void addExchangeClicked();
     void updateExchangeClicked(const QModelIndex &index);
     void deleteExchangeClicked(const QModelIndexList &index);
@@ -52,6 +53,6 @@ class RewardWidget : public QWidget, public LibG::MessageHandler {
     void deletePoinClicked(const QModelIndexList &index);
 };
 
-} // namespace LibGUI
+}
 
 #endif // REWARDWIDGET_H

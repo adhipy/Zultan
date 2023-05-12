@@ -27,9 +27,10 @@ namespace LibGUI {
 
 class HeaderWidget;
 
-class GUISHARED_EXPORT HorizontalHeader : public QHeaderView {
+class GUISHARED_EXPORT HorizontalHeader : public QHeaderView
+{
     Q_OBJECT
-  public:
+public:
     HorizontalHeader(QWidget *parent = nullptr, bool useStandartHeader = false);
     void showEvent(QShowEvent *e) override;
     QSize sizeHint() const override;
@@ -37,19 +38,19 @@ class GUISHARED_EXPORT HorizontalHeader : public QHeaderView {
     HeaderWidget *getHeaderWidget(int index);
     inline void setUseStandardHeader(bool val) { mUseStandartHeader = val; }
 
-  private:
-    QMap<int, QWidget *> mBoxes;
+private:
+    QMap<int, QWidget*> mBoxes;
     bool mUseStandartHeader;
 
     void fillDefValue(int index);
 
-  signals:
+signals:
     void filterValueChanged(int index, const QVariant &value);
 
-  private slots:
+private slots:
     void handleSectionResized(int i);
     void handleSectionMoved(int logical, int oldVisualIndex, int newVisualIndex);
 };
 
-} // namespace LibGUI
+}
 #endif // HORIZONTALHEADER_H

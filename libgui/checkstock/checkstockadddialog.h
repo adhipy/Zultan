@@ -30,18 +30,19 @@ class CheckStockAddDialog;
 
 namespace LibGUI {
 
-class CheckStockAddDialog : public QDialog, public LibG::MessageHandler {
+class CheckStockAddDialog : public QDialog, public LibG::MessageHandler
+{
     Q_OBJECT
 
-  public:
+public:
     CheckStockAddDialog(LibG::MessageBus *bus, QWidget *parent = nullptr);
     ~CheckStockAddDialog();
     void reset();
 
-  protected:
+protected:
     void messageReceived(LibG::Message *msg);
 
-  private:
+private:
     Ui::CheckStockAddDialog *ui;
     bool mIsAddAgain = false;
     float mLastStock = 0;
@@ -50,7 +51,7 @@ class CheckStockAddDialog : public QDialog, public LibG::MessageHandler {
 
     void inputCheckStock();
 
-  private slots:
+private slots:
     void barcodeDone();
     void addClicked();
     void addAgainClicked();
@@ -58,5 +59,5 @@ class CheckStockAddDialog : public QDialog, public LibG::MessageHandler {
     void openSearchItem();
 };
 
-} // namespace LibGUI
+}
 #endif // CHECKSTOCKADDDIALOG_H

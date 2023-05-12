@@ -24,10 +24,11 @@
 
 namespace LibServer {
 
-class RewardPoinAction : public ServerAction {
-  public:
+class RewardPoinAction : public ServerAction
+{
+public:
     RewardPoinAction();
 };
 
-} // namespace LibServer
+}
 #endif // REWARDPOINT_H

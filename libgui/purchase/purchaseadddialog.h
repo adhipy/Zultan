@@ -29,20 +29,21 @@ class PurchaseAddDialog;
 
 namespace LibGUI {
 
-class PurchaseAddDialog : public QDialog, public LibG::MessageHandler {
+class PurchaseAddDialog : public QDialog, public LibG::MessageHandler
+{
     Q_OBJECT
 
-  public:
+public:
     explicit PurchaseAddDialog(LibG::MessageBus *bus, QWidget *parent = nullptr);
     ~PurchaseAddDialog();
     void reset();
     void fill(const QVariantMap &data);
 
-  protected:
+protected:
     void messageReceived(LibG::Message *msg) override;
     void showEvent(QShowEvent *event) override;
 
-  private:
+private:
     Ui::PurchaseAddDialog *ui;
     int mCurrentSuplier = 0;
     int mId = 0;
@@ -51,15 +52,15 @@ class PurchaseAddDialog : public QDialog, public LibG::MessageHandler {
 
     void populateSuplier(const QVariantList &list);
 
-  signals:
+signals:
     void successAdd();
     void successUpdate(const QVariant &id);
 
-  private slots:
+private slots:
     void saveClicked();
     void typeChanged();
     void calculateTotal();
 };
 
-} // namespace LibGUI
+}
 #endif // PURCHASEADDDIALOG_H

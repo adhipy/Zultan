@@ -18,28 +18,31 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "barcode.h"
-#include "global_setting_const.h"
-#include "preference.h"
 #include "printer.h"
-#include <QApplication>
-#include <QDebug>
-#include <QDir>
+#include "preference.h"
+#include "global_setting_const.h"
 #include <QFile>
+#include <QDir>
+#include <QApplication>
 #include <QLocale>
+#include <QDebug>
 
 using namespace LibPrint;
 using namespace LibG;
 
-Barcode::Barcode() {}
+Barcode::Barcode()
+{
+}
 
-bool Barcode::print(const QString & /*name*/, const QString & /*barcode*/, int /*price*/, int /*copies*/) {
+bool Barcode::print(const QString &/*name*/, const QString &/*barcode*/, int /*price*/, int /*copies*/)
+{
     auto pluginsDir = QDir(qApp->applicationDirPath());
     QFile file(pluginsDir.absoluteFilePath(QLatin1String("barcode.zpl")));
-    if (!file.exists()) {
+    if(!file.exists()) {
         qDebug() << "file not exist";
         return false;
     }
-    if (!file.open(QFile::ReadOnly)) {
+    if(!file.open(QFile::ReadOnly)) {
         qDebug() << "file zpl can not openned";
         return false;
     }
@@ -54,14 +57,15 @@ bool Barcode::print(const QString & /*name*/, const QString & /*barcode*/, int /
     return true;
 }
 
-bool Barcode::print(const QList<BarcodePrintData> & /*data*/) {
+bool Barcode::print(const QList<BarcodePrintData> &/*data*/)
+{
     auto pluginsDir = QDir(qApp->applicationDirPath());
     QFile file(pluginsDir.absoluteFilePath(QLatin1String("barcode.zpl")));
-    if (!file.exists()) {
+    if(!file.exists()) {
         qDebug() << "file not exist";
         return false;
     }
-    if (!file.open(QFile::ReadOnly)) {
+    if(!file.open(QFile::ReadOnly)) {
         qDebug() << "file zpl can not openned";
         return false;
     }

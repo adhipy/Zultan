@@ -28,8 +28,9 @@ namespace LibG {
 class Message;
 class MessageBus;
 
-class GLOBALSHARED_EXPORT MessageHandler {
-  public:
+class GLOBALSHARED_EXPORT MessageHandler
+{
+public:
     MessageHandler();
     virtual ~MessageHandler();
     void setMessageBus(MessageBus *bus);
@@ -39,7 +40,7 @@ class GLOBALSHARED_EXPORT MessageHandler {
     void setAlwaysListen(int msg_type);
     void removeAlwaysListern(int msg_type);
 
-  protected:
+protected:
     MessageBus *mMessageBus;
     QList<int> mInterests;
     QList<int> mAlwaysListen;
@@ -47,5 +48,5 @@ class GLOBALSHARED_EXPORT MessageHandler {
     virtual void messageReceived(Message *msg) = 0;
 };
 
-} // namespace LibG
+}
 #endif // MESSAGEHANDLER_H

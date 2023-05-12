@@ -25,8 +25,9 @@
 
 namespace LibG {
 
-class GLOBALSHARED_EXPORT UserSession {
-  public:
+class GLOBALSHARED_EXPORT UserSession
+{
+public:
     static UserSession *init(const QVariantMap &data);
     static QString username();
     static QString name();
@@ -36,7 +37,7 @@ class GLOBALSHARED_EXPORT UserSession {
     static void logout();
     static bool isLoggedIn();
 
-  private:
+private:
     UserSession();
 
     int mId = 0;
@@ -45,5 +46,5 @@ class GLOBALSHARED_EXPORT UserSession {
     QList<int> mPermission;
 };
 
-} // namespace LibG
+}
 #endif // USERSESSION_H

@@ -21,8 +21,8 @@
 #define PURCHASEITEMWIDGET_H
 
 #include "messagehandler.h"
-#include <QModelIndexList>
 #include <QWidget>
+#include <QModelIndexList>
 
 namespace Ui {
 class NormalWidget;
@@ -34,15 +34,16 @@ class TableWidget;
 class PurchaseAddItemDialog;
 class TileWidget;
 
-class PurchaseItemWidget : public QWidget, public LibG::MessageHandler {
+class PurchaseItemWidget : public QWidget, public LibG::MessageHandler
+{
     Q_OBJECT
 
-  public:
+public:
     PurchaseItemWidget(const QVariantMap &data, LibG::MessageBus *bus, QWidget *parent = nullptr);
     ~PurchaseItemWidget();
     inline int getId() { return mId; }
 
-  private:
+private:
     Ui::NormalWidget *ui;
     int mId;
     TableWidget *mTableWidget;
@@ -51,15 +52,15 @@ class PurchaseItemWidget : public QWidget, public LibG::MessageHandler {
     TileWidget *mTileDiscount;
     TileWidget *mTileFinal;
 
-  protected:
+protected:
     void messageReceived(LibG::Message *msg) override;
 
-  private slots:
+private slots:
     void addClicked();
     void updateClicked(const QModelIndex &index);
     void delClicked(const QModelIndexList &index);
     void refreshSummary();
 };
 
-} // namespace LibGUI
+}
 #endif // PURCHASEITEMWIDGET_H

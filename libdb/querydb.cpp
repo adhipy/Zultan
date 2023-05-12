@@ -23,18 +23,30 @@
 
 using namespace LibDB;
 
-QueryDB::QueryDB() : mLimit(0), mStart(0) {}
+QueryDB::QueryDB():
+    mLimit(0),
+    mStart(0)
+{
+}
 
-void QueryDB::setFilter(const QString &key, int type, const QVariant &data) {
+void QueryDB::setFilter(const QString &key, int type, const QVariant &data)
+{
     FilterData filter(type, data);
     mFilter.insert(key, filter);
 }
 
-void QueryDB::addData(const QString &key, const QVariant &d) { mData.insert(key, d); }
+void QueryDB::addData(const QString &key, const QVariant &d)
+{
+    mData.insert(key, d);
+}
 
-void QueryDB::clearFilter() { mFilter.clear(); }
+void QueryDB::clearFilter()
+{
+    mFilter.clear();
+}
 
-void QueryDB::clearAll() {
+void QueryDB::clearAll()
+{
     mFilter.clear();
     mData.clear();
     mSort = QString();
@@ -42,27 +54,44 @@ void QueryDB::clearAll() {
     mLimit = 0;
 }
 
-void QueryDB::clearData() { mData.clear(); }
+void QueryDB::clearData()
+{
+    mData.clear();
+}
 
-void QueryDB::clearSort() { mSort = QString(); }
+void QueryDB::clearSort()
+{
+    mSort = QString();
+}
 
-void QueryDB::removeFilter(const QString &key) {
-    if (mFilter.contains(key))
+void QueryDB::removeFilter(const QString &key)
+{
+    if(mFilter.contains(key))
         mFilter.remove(key);
 }
 
-void QueryDB::setSort(const QString &sort) { mSort = sort; }
+void QueryDB::setSort(const QString &sort)
+{
+    mSort = sort;
+}
 
-void QueryDB::setLimit(int val) { mLimit = val; }
+void QueryDB::setLimit(int val)
+{
+    mLimit = val;
+}
 
-void QueryDB::setStart(int val) { mStart = val; }
+void QueryDB::setStart(int val)
+{
+    mStart = val;
+}
 
-void QueryDB::bind(LibG::Message *msg) {
+void QueryDB::bind(LibG::Message *msg)
+{
     msg->resetQuery();
     msg->setSort(mSort);
-    if (mLimit > 0)
+    if(mLimit > 0)
         msg->setLimit(mLimit);
-    if (mStart > 0)
+    if(mStart > 0)
         msg->setStart(mStart);
     QMapIterator<QString, FilterData> i(mFilter);
     while (i.hasNext()) {
@@ -76,3 +105,4 @@ void QueryDB::bind(LibG::Message *msg) {
         msg->addData(d.key(), d.value());
     }
 }
+

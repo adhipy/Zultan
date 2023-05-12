@@ -24,8 +24,9 @@
 
 namespace LibServer {
 
-class ItemAction : public ServerAction {
-  public:
+class ItemAction : public ServerAction
+{
+public:
     ItemAction();
     LibG::Message insert(LibG::Message *msg) override;
     LibG::Message update(LibG::Message *msg) override;
@@ -35,13 +36,13 @@ class ItemAction : public ServerAction {
     LibG::Message importData(LibG::Message *msg);
     LibG::Message summary(LibG::Message *msg);
 
-  protected:
+protected:
     void selectAndJoin() override;
     QMap<QString, QString> fieldMap() const override;
 
-  private:
+private:
     QStringList mBarcodeChecked;
 };
 
-} // namespace LibServer
+}
 #endif // ITEMACTION_H

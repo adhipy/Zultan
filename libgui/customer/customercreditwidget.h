@@ -26,24 +26,25 @@
 namespace Ui {
 class NormalWidget;
 class CreditSummaryWidget;
-} // namespace Ui
+}
 
 namespace LibGUI {
 
 class TableWidget;
 class AddCreditPaymentDialog;
 
-class CustomerCreditWidget : public QWidget, public LibG::MessageHandler {
+class CustomerCreditWidget : public QWidget, public LibG::MessageHandler
+{
     Q_OBJECT
-  public:
+public:
     CustomerCreditWidget(int id, const QString &number, LibG::MessageBus *bus, QWidget *parent = nullptr);
     ~CustomerCreditWidget();
     inline int getId() { return mId; }
 
-  protected:
+protected:
     void messageReceived(LibG::Message *msg) override;
 
-  private:
+private:
     Ui::NormalWidget *ui;
     Ui::CreditSummaryWidget *uiSummary;
     TableWidget *mTableWidget;
@@ -51,12 +52,12 @@ class CustomerCreditWidget : public QWidget, public LibG::MessageHandler {
     AddCreditPaymentDialog *mAddDialog;
     double mTotal;
 
-  private slots:
+private slots:
     void addClicked();
     void refreshCustomer();
     void printClicked();
     void print(const QVariantMap &data);
 };
 
-} // namespace LibGUI
+}
 #endif // CUSTOMERCREDIT_H

@@ -23,8 +23,8 @@
 
 #include "db_global.h"
 
-#include <QMap>
 #include <QString>
+#include <QMap>
 #include <QVariant>
 
 namespace LibG {
@@ -32,7 +32,8 @@ class Message;
 }
 
 struct FilterData {
-    FilterData(int type, const QVariant &data) {
+    FilterData(int type, const QVariant &data)
+    {
         this->type = type;
         this->data = data;
     }
@@ -43,8 +44,9 @@ struct FilterData {
 
 namespace LibDB {
 
-class DBSHARED_EXPORT QueryDB {
-  public:
+class DBSHARED_EXPORT QueryDB
+{
+public:
     QueryDB();
     void setFilter(const QString &key, int type, const QVariant &data);
     void addData(const QString &key, const QVariant &d);
@@ -59,7 +61,7 @@ class DBSHARED_EXPORT QueryDB {
     inline int getLimit() { return mLimit; }
     void bind(LibG::Message *msg);
 
-  private:
+private:
     QMap<QString, FilterData> mFilter;
     QMap<QString, QVariant> mData;
     QString mSort;
@@ -67,5 +69,5 @@ class DBSHARED_EXPORT QueryDB {
     int mStart;
 };
 
-} // namespace LibDB
+}
 #endif // QUERYDB_H

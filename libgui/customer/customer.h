@@ -25,8 +25,9 @@
 
 namespace LibGUI {
 
-class Customer {
-  public:
+class Customer
+{
+public:
     int id = 0;
     int reward = 0;
     double credit = 0;
@@ -39,5 +40,5 @@ class Customer {
     QVariantMap toMap();
 };
 
-} // namespace LibGUI
+}
 #endif // CUSOMER_H

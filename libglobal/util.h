@@ -25,8 +25,9 @@
 
 namespace LibG {
 
-class GLOBALSHARED_EXPORT Util {
-  public:
+class GLOBALSHARED_EXPORT Util
+{
+public:
     Util();
     static void init(const QString &appDir);
     static QDate getBeginningOfMonth();
@@ -42,8 +43,8 @@ class GLOBALSHARED_EXPORT Util {
     static QString elide(const QString &str, int length);
     static double roundDouble(double val);
 
-  private:
+private:
 };
 
-} // namespace LibG
+}
 #endif // UTIL_H

@@ -24,13 +24,14 @@
 
 namespace LibServer {
 
-class ItemLinkAction : public ServerAction {
-  public:
+class ItemLinkAction : public ServerAction
+{
+public:
     ItemLinkAction();
 
-  protected:
+protected:
     void selectAndJoin() override;
 };
 
-} // namespace LibServer
+}
 #endif // ITEMLINKACTION_H

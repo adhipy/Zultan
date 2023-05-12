@@ -24,11 +24,12 @@
 
 namespace LibServer {
 
-class UnitAction : public ServerAction {
-  public:
+class UnitAction: public ServerAction
+{
+public:
     UnitAction();
 };
 
-} // namespace LibServer
+}
 
 #endif // UNITACTION_H

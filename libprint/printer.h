@@ -21,23 +21,23 @@
 #define PRINTER_H
 
 #include "print_global.h"
-#include <QMutex>
 #include <QStringList>
+#include <QMutex>
 
 namespace LibPrint {
 
-class PRINTSHARED_EXPORT Printer {
-  private:
+class PRINTSHARED_EXPORT Printer
+{
+private:
     Printer();
     QMutex mMutex;
 
-  public:
+public :
     static Printer *instance();
     static void destroy();
     QStringList getPrintList();
-    void print(const QString &printName, const QString &data, int type = 1, uint16_t vendorId = 0,
-               uint16_t produckId = 0);
+    void print(const QString &printName, const QString &data, int type = 1, uint16_t vendorId = 0, uint16_t produckId = 0);
 };
 
-} // namespace LibPrint
+}
 #endif // PRINTER_H

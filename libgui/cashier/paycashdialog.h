@@ -20,8 +20,8 @@
 #ifndef PAYCASHDIALOG_H
 #define PAYCASHDIALOG_H
 
-#include <QDialog>
 #include <functional>
+#include <QDialog>
 
 namespace Ui {
 class PayCashDialog;
@@ -29,27 +29,28 @@ class PayCashDialog;
 
 namespace LibGUI {
 
-class PayCashDialog : public QDialog {
+class PayCashDialog : public QDialog
+{
     Q_OBJECT
 
-  public:
+public:
     PayCashDialog(QWidget *parent = nullptr);
     ~PayCashDialog();
     void fill(double total);
 
-  private:
+private:
     Ui::PayCashDialog *ui;
     double mTotal = 0;
     std::function<bool(double)> mPayCallback;
     void saveTransaction();
 
-  private slots:
+private slots:
     void payClicked();
     void saveClicked();
 
-  signals:
+signals:
     void requestPay(int type, double payment, int flag);
 };
 
-} // namespace LibGUI
+}
 #endif // PAYCASHDIALOG_H

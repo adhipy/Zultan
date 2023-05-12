@@ -24,15 +24,16 @@
 
 namespace LibServer {
 
-class CategoryAction : public ServerAction {
-  public:
+class CategoryAction : public ServerAction
+{
+public:
     CategoryAction();
 
-  protected:
+protected:
     void afterInsert(const QVariantMap &data) override;
     void afterDelete(const QVariantMap &oldData) override;
     void parentAddChild(int parent, int child);
 };
 
-} // namespace LibServer
+}
 #endif // CATEGORYACTION_H

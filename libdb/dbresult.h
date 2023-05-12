@@ -28,8 +28,9 @@
 
 namespace LibDB {
 
-class DBSHARED_EXPORT DbResult {
-  public:
+class DBSHARED_EXPORT DbResult
+{
+public:
     DbResult();
     DbResult(const QList<QVariant> &data);
     inline bool isEmpty() { return mData.isEmpty(); }
@@ -38,9 +39,9 @@ class DBSHARED_EXPORT DbResult {
     QVariantMap data(int pos);
     inline QVariantList &data() { return mData; }
 
-  private:
+private:
     QVariantList mData;
 };
 
-} // namespace LibDB
+}
 #endif // DBRESULT_H

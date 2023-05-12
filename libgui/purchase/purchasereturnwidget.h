@@ -21,8 +21,8 @@
 #define PURCHASERETURNWIDGET_H
 
 #include "messagehandler.h"
-#include <QModelIndexList>
 #include <QWidget>
+#include <QModelIndexList>
 
 namespace Ui {
 class NormalWidget;
@@ -33,21 +33,22 @@ namespace LibGUI {
 class TableWidget;
 class TileWidget;
 
-class PurchaseReturnWidget : public QWidget, public LibG::MessageHandler {
+class PurchaseReturnWidget : public QWidget, public LibG::MessageHandler
+{
     Q_OBJECT
-  public:
+public:
     PurchaseReturnWidget(LibG::MessageBus *bus, QWidget *parent = nullptr);
 
-  protected:
+protected:
     void messageReceived(LibG::Message *msg) override;
     void showEvent(QShowEvent *e);
 
-  private:
+private:
     Ui::NormalWidget *ui;
     TableWidget *mTableWidget;
     TileWidget *mTotalCredit;
 
-  private slots:
+private slots:
     void addClicked();
     void updateClicked(const QModelIndex &index);
     void deleteClicked(const QModelIndexList &index);
@@ -55,6 +56,6 @@ class PurchaseReturnWidget : public QWidget, public LibG::MessageHandler {
     void resolutionClicked();
 };
 
-} // namespace LibGUI
+}
 
 #endif // PURCHASERETURNWIDGET_H

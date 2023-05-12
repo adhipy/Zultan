@@ -29,17 +29,18 @@ class CustomerCreditPaymentDialog;
 
 namespace LibGUI {
 
-class CustomerCreditPaymentDialog : public QDialog, public LibG::MessageHandler {
+class CustomerCreditPaymentDialog : public QDialog, public LibG::MessageHandler
+{
     Q_OBJECT
 
-  public:
+public:
     CustomerCreditPaymentDialog(LibG::MessageBus *bus, QWidget *parent = nullptr);
     ~CustomerCreditPaymentDialog();
 
-  protected:
+protected:
     void messageReceived(LibG::Message *msg) override;
 
-  private:
+private:
     Ui::CustomerCreditPaymentDialog *ui;
     double mCredit = 0;
     int mId = 0;
@@ -47,12 +48,12 @@ class CustomerCreditPaymentDialog : public QDialog, public LibG::MessageHandler 
 
     void printData(const QVariantMap &d);
 
-  private slots:
+private slots:
     void numberDone();
     void openSearchCustomer();
     void payClicked();
     void calculateRest();
 };
 
-} // namespace LibGUI
+}
 #endif // CUSTOMERCREDITPAYMENTDIALOG_H

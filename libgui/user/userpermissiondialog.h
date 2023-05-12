@@ -20,29 +20,30 @@
 #ifndef USERPERMISSIONDIALOG_H
 #define USERPERMISSIONDIALOG_H
 
-#include "permissionhelper.h"
 #include <QDialog>
+#include "permissionhelper.h"
 
 namespace Ui {
 class UserPermissionDialog;
 }
 
-class UserPermissionDialog : public QDialog {
+class UserPermissionDialog : public QDialog
+{
     Q_OBJECT
 
-  public:
+public:
     UserPermissionDialog(const QVariantMap &data, QWidget *parent = nullptr);
     ~UserPermissionDialog();
 
-  private:
+private:
     Ui::UserPermissionDialog *ui;
     LibG::PermissionHelper mPermission;
     int mId;
 
-  signals:
+signals:
     void saveData(const QVariantMap &data, int id);
 
-  private slots:
+private slots:
     void listAvailableDoubleClicked(const QModelIndex &index);
     void listSelectedDoubleClicked(const QModelIndex &index);
     void saveClicked();

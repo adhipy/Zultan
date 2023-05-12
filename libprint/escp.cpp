@@ -26,31 +26,43 @@
 
 using namespace LibPrint;
 
-Escp::Escp(int type, int width10, int width12, int width15)
-    : mType(type), mMaster(0), mWidth10(width10), mWidth12(width12), mWidth15(width15), mWidth(width10), mCurCol(-1),
-      mRestWidth(0), mNumLine(0) {
+Escp::Escp(int type, int width10, int width12, int width15):
+    mType(type),
+    mMaster(0),
+    mWidth10(width10),
+    mWidth12(width12),
+    mWidth15(width15),
+    mWidth(width10),
+    mCurCol(-1),
+    mRestWidth(0),
+    mNumLine(0)
+{
     init();
 }
 
-Escp *Escp::setCpi10Only(bool value) {
+Escp *Escp::setCpi10Only(bool value)
+{
     mCpi10Only = value;
     return this;
 }
 
-Escp *Escp::setWidth(int width) {
+Escp *Escp::setWidth(int width)
+{
     mWidth = width;
     return this;
 }
 
-Escp *Escp::line(const QChar &ch) {
-    for (int i = 0; i < mWidth; i++)
+Escp *Escp::line(const QChar &ch)
+{
+    for(int i = 0; i < mWidth; i++)
         mData.append(ch);
     newLine();
     return this;
 }
 
-Escp *Escp::newLine(int line) {
-    for (int i = 0; i < line; i++)
+Escp *Escp::newLine(int line)
+{
+    for(int i = 0; i < line; i++)
         mData.append(QChar(0xA));
     mRestWidth = mWidth;
     mCurCol = 0;
@@ -58,10 +70,11 @@ Escp *Escp::newLine(int line) {
     return this;
 }
 
-Escp *Escp::bold(bool bold) {
+Escp *Escp::bold(bool bold)
+{
     mData.append(QChar(0x1B));
     mData.append(QChar(0x21));
-    if (bold)
+    if(bold)
         mMaster |= BOLD;
     else
         mMaster &= ~BOLD;
@@ -69,10 +82,11 @@ Escp *Escp::bold(bool bold) {
     return this;
 }
 
-Escp *Escp::doubleHeight(bool value) {
+Escp *Escp::doubleHeight(bool value)
+{
     mData.append(QChar(0x1B));
     mData.append(QChar(0x21));
-    if (value)
+    if(value)
         mMaster |= DOUBLE_HEIGHT;
     else
         mMaster &= ~DOUBLE_HEIGHT;
@@ -80,7 +94,8 @@ Escp *Escp::doubleHeight(bool value) {
     return this;
 }
 
-Escp *Escp::doubleWidth(bool /*value*/) {
+Escp *Escp::doubleWidth(bool /*value*/)
+{
     /*mData.append(QChar(0x1B));
     mData.append(QChar(0x21));
     if(value)
@@ -91,7 +106,8 @@ Escp *Escp::doubleWidth(bool /*value*/) {
     return this;
 }
 
-Escp *Escp::cpi10() {
+Escp *Escp::cpi10()
+{
     mData.append(QChar(0x1B));
     mData.append(QChar(0x21));
     mMaster &= ~CPI;
@@ -100,9 +116,9 @@ Escp *Escp::cpi10() {
     return this;
 }
 
-Escp *Escp::cpi12() {
-    if (mCpi10Only)
-        return this;
+Escp *Escp::cpi12()
+{
+    if(mCpi10Only) return this;
     mData.append(QChar(0x1B));
     mData.append(QChar(0x21));
     mMaster |= CPI;
@@ -111,25 +127,26 @@ Escp *Escp::cpi12() {
     return this;
 }
 
-Escp *Escp::cpi15() {
-    if (mCpi10Only)
-        return this;
+Escp *Escp::cpi15()
+{
+    if(mCpi10Only) return this;
     mData.append(QChar(0x1B));
     mData.append(QChar(0x67));
     return this;
 }
 
-Escp *Escp::column(const QList<int> col) {
+Escp *Escp::column(const QList<int> col)
+{
     mColumn = col;
     mCurCol = 0;
     return this;
 }
 
-Escp *Escp::fullText(const QStringList &str) {
-    if (str.size() != 2)
-        return this;
+Escp *Escp::fullText(const QStringList &str)
+{
+    if(str.size() != 2) return this;
     int tot = str[0].size() + str[1].size();
-    if (tot > mWidth) {
+    if(tot > mWidth) {
         int diff = mWidth - tot + 1;
         tot -= diff;
         mData.append(str[0].left(str[0].size() - diff)).append(str[1].rightJustified(mWidth - tot, QChar(' ')));
@@ -139,18 +156,18 @@ Escp *Escp::fullText(const QStringList &str) {
     return this;
 }
 
-Escp *Escp::leftText(const QString &str, bool overflow) {
+Escp *Escp::leftText(const QString &str, bool overflow)
+{
     int w = mWidth;
-    if (mColumn.size() > 0 && mCurCol < mColumn.size()) {
-        if (mCurCol >= mColumn.size())
-            mCurCol = 0;
+    if(mColumn.size() > 0 && mCurCol < mColumn.size()) {
+        if(mCurCol >= mColumn.size()) mCurCol = 0;
         w = getCurrentWidth(mCurCol);
         mCurCol++;
     }
-    if (mColumn.isEmpty() && overflow) {
+    if(mColumn.isEmpty() && overflow) {
         mData.append(str);
     } else {
-        if (str.length() > w) {
+        if(str.length() > w) {
             QStringRef ref(&str, 0, w);
             mData.append(ref.toString());
         } else {
@@ -161,18 +178,18 @@ Escp *Escp::leftText(const QString &str, bool overflow) {
     return this;
 }
 
-Escp *Escp::centerText(const QString &str, bool overflow) {
+Escp *Escp::centerText(const QString &str, bool overflow)
+{
     int w = mWidth;
-    if (mColumn.size() > 0 && mCurCol < mColumn.size()) {
-        if (mCurCol >= mColumn.size())
-            mCurCol = 0;
+    if(mColumn.size() > 0 && mCurCol < mColumn.size()) {
+        if(mCurCol >= mColumn.size()) mCurCol = 0;
         w = getCurrentWidth(mCurCol);
         mCurCol++;
     }
-    if (overflow && mColumn.isEmpty()) {
+    if(overflow && mColumn.isEmpty()) {
         writeText(str, w, CENTER);
     } else {
-        if (str.length() > w) {
+        if(str.length() > w) {
             QStringRef ref(&str, 0, w);
             mData.append(ref.toString());
         } else {
@@ -184,18 +201,18 @@ Escp *Escp::centerText(const QString &str, bool overflow) {
     return this;
 }
 
-Escp *Escp::rightText(const QString &str, bool overflow) {
+Escp *Escp::rightText(const QString &str, bool overflow)
+{
     int w = mWidth;
-    if (mColumn.size() > 0 && mCurCol < mColumn.size()) {
-        if (mCurCol >= mColumn.size())
-            mCurCol = 0;
+    if(mColumn.size() > 0 && mCurCol < mColumn.size()) {
+        if(mCurCol >= mColumn.size()) mCurCol = 0;
         w = getCurrentWidth(mCurCol);
         mCurCol++;
     }
-    if (overflow && mColumn.isEmpty()) {
+    if(overflow && mColumn.isEmpty()) {
         writeText(str, w, RIGHT);
     } else {
-        if (str.length() > w) {
+        if(str.length() > w) {
             QStringRef ref(&str, 0, w);
             mData.append(ref.toString());
         } else {
@@ -206,12 +223,14 @@ Escp *Escp::rightText(const QString &str, bool overflow) {
     return this;
 }
 
-Escp *Escp::openDrawer() {
+Escp *Escp::openDrawer()
+{
     mData.append(openDrawerCommand());
     return this;
 }
 
-QString Escp::openDrawerCommand() {
+QString Escp::openDrawerCommand()
+{
     QString d;
     d.append(QChar(0x1B));
     d.append(QChar(0x40));
@@ -223,7 +242,8 @@ QString Escp::openDrawerCommand() {
     return d;
 }
 
-QString Escp::cutPaperCommand() {
+QString Escp::cutPaperCommand()
+{
     QString d;
     d.append(QChar(0x1B));
     d.append(QChar(0x40));
@@ -232,18 +252,20 @@ QString Escp::cutPaperCommand() {
     return d;
 }
 
-void Escp::init() {
+void Escp::init()
+{
     mData.append(QChar(0x1B));
     mData.append(QChar(0x40));
 }
 
-int Escp::getCurrentWidth(int col) {
-    if (mColumn.size() > 0) {
+int Escp::getCurrentWidth(int col)
+{
+    if(mColumn.size() > 0) {
         int w = mWidth - mColumn.size();
-        if (col < mColumn.size()) {
-            if (col == mColumn.size() - 1) {
+        if(col < mColumn.size()) {
+            if(col == mColumn.size() - 1) {
                 int h = 0;
-                for (int i = 0; i < mColumn.size() - 1; i++) {
+                for(int i = 0; i < mColumn.size() - 1; i++) {
                     h += (w * mColumn[i] / 100);
                 }
                 return mWidth - h;
@@ -254,17 +276,21 @@ int Escp::getCurrentWidth(int col) {
     return mWidth;
 }
 
-bool Escp::isTrue(int flag) { return ((mMaster & flag) != 0); }
+bool Escp::isTrue(int flag)
+{
+    return ((mMaster & flag) != 0);
+}
 
-void Escp::writeText(const QString &str, int width, int alignment) {
+void Escp::writeText(const QString &str, int width, int alignment)
+{
     const QStringList &list = str.split(QLatin1Char('\n'));
-    for (int i = 0; i < list.size(); i++) {
+    for(int i = 0; i < list.size(); i++) {
         const QString &val = list.at(i);
         int row = 0;
         int lenght = val.size();
-        while (lenght > 0) {
+        while(lenght > 0) {
             int l = lenght;
-            if (lenght >= width) {
+            if(lenght >= width) {
                 lenght -= width;
                 l = width;
             } else {
@@ -272,7 +298,7 @@ void Escp::writeText(const QString &str, int width, int alignment) {
                 lenght = 0;
             }
             QStringRef ref(&val, row * width, l);
-            if (alignment == CENTER)
+            if(alignment == CENTER)
                 centerText(ref.toString());
             else
                 rightText(ref.toString());

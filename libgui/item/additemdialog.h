@@ -30,10 +30,11 @@ class AddItemDialog;
 
 namespace LibGUI {
 
-class AddItemDialog : public QDialog, public LibG::MessageHandler {
+class AddItemDialog : public QDialog, public LibG::MessageHandler
+{
     Q_OBJECT
 
-  public:
+public:
     enum Tab { Price, Package, Ingridient, ItemLink };
     AddItemDialog(LibG::MessageBus *bus, QWidget *parent = nullptr);
     ~AddItemDialog();
@@ -44,12 +45,12 @@ class AddItemDialog : public QDialog, public LibG::MessageHandler {
     void setBarcode(const QString &barcode);
     inline bool isSuccess() { return mIsSuccess; }
 
-  protected:
+protected:
     void messageReceived(LibG::Message *msg) override;
     void showEvent(QShowEvent *event) override;
     void fill(const QVariantMap &data);
 
-  private:
+private:
     Ui::AddItemDialog *ui;
     bool mIsUpdate = false;
     bool mIsAddAgain = false;
@@ -71,7 +72,7 @@ class AddItemDialog : public QDialog, public LibG::MessageHandler {
     int getItemFlagFromCheckbox();
     void applyItemFlagToCheckbox(int flag);
 
-  private slots:
+private slots:
     void barcodeDone();
     void returnPressed();
     void saveClicked();
@@ -91,9 +92,9 @@ class AddItemDialog : public QDialog, public LibG::MessageHandler {
     void deleteIngridient(const QModelIndexList &index);
     void calculateIngridientPrice();
 
-  signals:
+signals:
     void success();
 };
 
-} // namespace LibGUI
+}
 #endif // ADDITEMDIALOG_H

@@ -21,4 +21,8 @@
 
 using namespace LibServer;
 
-StockCardAction::StockCardAction() : ServerAction("stockcards", "id") { mFlag = USE_TRANSACTION; }
+StockCardAction::StockCardAction():
+    ServerAction("stockcards", "id")
+{
+    mFlag = USE_TRANSACTION;
+}

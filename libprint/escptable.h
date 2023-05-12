@@ -26,9 +26,12 @@
 
 namespace LibPrint {
 
-class PRINTSHARED_EXPORT EscpTable {
-  public:
-    enum { ALIGN_LEFT, ALIGN_CENTER, ALIGN_RIGHT };
+class PRINTSHARED_EXPORT EscpTable
+{
+public:
+    enum {
+        ALIGN_LEFT, ALIGN_CENTER, ALIGN_RIGHT
+    };
     EscpTable(int width);
     void setColumnWidth(const QList<int> &colWidths);
     inline void setUseBorder(bool border) { mUseBorder = border; }
@@ -38,7 +41,7 @@ class PRINTSHARED_EXPORT EscpTable {
     void end();
     QString data();
 
-  private:
+private:
     int mWidth;
     bool mUseBorder;
     QList<int> mColWidth;
@@ -52,6 +55,6 @@ class PRINTSHARED_EXPORT EscpTable {
     void write(const QString &val, int aligment, int width);
 };
 
-} // namespace LibPrint
+}
 
 #endif // ESCPTABLE_H

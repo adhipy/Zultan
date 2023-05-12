@@ -28,21 +28,22 @@ class RestoreItemDialog;
 
 namespace LibGUI {
 
-class RestoreItemDialog : public QDialog {
+class RestoreItemDialog : public QDialog
+{
     Q_OBJECT
 
-  public:
+public:
     RestoreItemDialog(const QVariantMap &data, QWidget *parent = nullptr);
     ~RestoreItemDialog();
     inline bool isOk() { return mIsOk; }
 
-  private:
+private:
     Ui::RestoreItemDialog *ui;
     bool mIsOk = false;
 
-  private slots:
+private slots:
     void restoreClicked();
 };
 
-} // namespace LibGUI
+}
 #endif // RESTOREITEMDIALOG_H

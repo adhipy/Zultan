@@ -25,15 +25,16 @@
 
 namespace LibGUI {
 
-class GoogleDrive : public QObject {
+class GoogleDrive : public QObject
+{
     Q_OBJECT
-  public:
+public:
     GoogleDrive(O2Google *googleAuth, QObject *parent = 0);
     void getFiles();
     void uploadFile(const QByteArray &data);
     void downloadFile(const QString &fileid);
 
-  private:
+private:
     O2Google *mAuth;
     QNetworkAccessManager *mManager;
     QString mFolderId;
@@ -45,14 +46,14 @@ class GoogleDrive : public QObject {
     void uploadFileExec();
     void getFileExec();
 
-  signals:
+signals:
     void fileQueryAnswered(const QJsonArray &list);
     void fileUploaded();
     void uploadProgress(int value);
     void downloadProgress(int value);
     void fileDownloaded(const QByteArray &data);
 
-  private slots:
+private slots:
     void getFolderDone(int id, QNetworkReply::NetworkError error, QByteArray data);
     void getFileDone(int id, QNetworkReply::NetworkError error, QByteArray data);
     void createFolderDone(int id, QNetworkReply::NetworkError error, QByteArray data);
@@ -64,5 +65,5 @@ class GoogleDrive : public QObject {
     void downloadDone();
 };
 
-} // namespace LibGUI
+}
 #endif // GOOGLEDRIVE_H

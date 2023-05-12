@@ -21,8 +21,8 @@
 #define ITEMWIDGET_H
 
 #include "messagehandler.h"
-#include <QModelIndexList>
 #include <QWidget>
+#include <QModelIndexList>
 
 namespace Ui {
 class ItemWidget;
@@ -36,16 +36,17 @@ class AddItemDialog;
 class AddPriceDialog;
 class TileWidget;
 
-class ItemWidget : public QWidget, public LibG::MessageHandler {
+class ItemWidget : public QWidget, public LibG::MessageHandler
+{
     Q_OBJECT
-  public:
+public:
     ItemWidget(LibG::MessageBus *bus, QWidget *parent = nullptr);
     ~ItemWidget();
 
-  protected:
+protected:
     void messageReceived(LibG::Message *msg);
 
-  private:
+private:
     Ui::ItemWidget *ui;
     TableWidget *mMainTable;
     AddItemDialog *mAddDialog;
@@ -55,7 +56,7 @@ class ItemWidget : public QWidget, public LibG::MessageHandler {
     QString mCurrentBarcode;
     QString mCurrentName;
 
-  private slots:
+private slots:
     void mainTableSelectionChanges();
     void addItemClicked();
     void updateItemClicked(const QModelIndex &index);
@@ -66,9 +67,9 @@ class ItemWidget : public QWidget, public LibG::MessageHandler {
     void openStockCard();
     void reloadSummary();
 
-  private:
+private:
     void printPrice(TableItem *item);
 };
 
-} // namespace LibGUI
+}
 #endif // ITEMWIDGET_H

@@ -30,10 +30,11 @@ class CategoryAddDialog;
 
 namespace LibGUI {
 
-class CategoryAddDialog : public QDialog {
+class CategoryAddDialog : public QDialog
+{
     Q_OBJECT
 
-  public:
+public:
     CategoryAddDialog(QWidget *parent = nullptr);
     ~CategoryAddDialog();
     void reset();
@@ -41,16 +42,16 @@ class CategoryAddDialog : public QDialog {
     void enableSaveButton(bool enable);
     QComboBox *getComboParent();
 
-  private:
+private:
     Ui::CategoryAddDialog *ui;
     int mId = 0;
 
-  signals:
+signals:
     void saveRequest(const QVariantMap &data, int id);
 
-  private slots:
+private slots:
     void saveClicked();
 };
 
-} // namespace LibGUI
+}
 #endif // CATEGOTYADDDIALOG_H

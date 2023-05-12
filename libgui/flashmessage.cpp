@@ -18,19 +18,21 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 #include "flashmessage.h"
-#include <QDebug>
-#include <QLabel>
-#include <QMap>
-#include <QStringBuilder>
 #include <QTimer>
+#include <QMap>
+#include <QLabel>
 #include <QVBoxLayout>
+#include <QStringBuilder>
+#include <QDebug>
 
 using namespace LibGUI;
 
 const QMap<int, int> LIFETIME{{FlashMessage::Short, 2000}, {FlashMessage::Long, 5000}};
 
-FlashMessage::FlashMessage(const QString &message, int type, int lifetime, QWidget *parent)
-    : QWidget(parent), mTimer(new QTimer(this)) {
+FlashMessage::FlashMessage(const QString &message, int type, int lifetime, QWidget *parent) :
+    QWidget(parent),
+    mTimer(new QTimer(this))
+{
     setMinimumWidth(300);
     setMaximumWidth(300);
     auto layout = new QVBoxLayout();
@@ -41,7 +43,7 @@ FlashMessage::FlashMessage(const QString &message, int type, int lifetime, QWidg
     setLayout(layout);
     setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::WindowDoesNotAcceptFocus);
     QString style = "border: 2px solid #ababab;border-radius: 10px;";
-    switch (type) {
+    switch(type) {
     case Info:
         style = style % "background-color: white;";
         break;
@@ -60,16 +62,19 @@ FlashMessage::FlashMessage(const QString &message, int type, int lifetime, QWidg
     adjustSize();
 }
 
-FlashMessage::~FlashMessage() {}
+FlashMessage::~FlashMessage()
+{
+}
 
-void FlashMessage::mouseReleaseEvent(QMouseEvent *event) {
+void FlashMessage::mouseReleaseEvent(QMouseEvent *event)
+{
     lifetimeDone();
     QWidget::mouseReleaseEvent(event);
 }
 
-void FlashMessage::lifetimeDone() {
-    if (mTimer->isActive())
-        mTimer->stop();
+void FlashMessage::lifetimeDone()
+{
+    if(mTimer->isActive()) mTimer->stop();
     emit done(this);
     close();
     deleteLater();

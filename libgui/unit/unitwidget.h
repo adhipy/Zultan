@@ -21,8 +21,8 @@
 #define UNITWIDGET_H
 
 #include "messagehandler.h"
-#include <QModelIndexList>
 #include <QWidget>
+#include <QModelIndexList>
 
 namespace Ui {
 class NormalWidget;
@@ -32,24 +32,25 @@ namespace LibGUI {
 
 class TableWidget;
 
-class UnitWidget : public QWidget, public LibG::MessageHandler {
+class UnitWidget : public QWidget, public LibG::MessageHandler
+{
     Q_OBJECT
-  public:
+public:
     UnitWidget(LibG::MessageBus *bus, QWidget *parent = nullptr);
 
-  protected:
+protected:
     void messageReceived(LibG::Message *msg) override;
 
-  private:
+private:
     Ui::NormalWidget *ui;
     TableWidget *mTableWidget;
 
-  private slots:
+private slots:
     void addClicked();
     void editClicked(const QModelIndex &index);
     void deleteClicked(const QModelIndexList &index);
 };
 
-} // namespace LibGUI
+}
 
 #endif // UNITWIDGET_H

@@ -31,10 +31,11 @@ class TransactionListDialog;
 
 namespace LibGUI {
 
-class TransactionListDialog : public QDialog, public LibG::MessageHandler {
+class TransactionListDialog : public QDialog, public LibG::MessageHandler
+{
     Q_OBJECT
 
-  public:
+public:
     enum DialogType { Cashier, SoldReturn };
     TransactionListDialog(LibG::MessageBus *bus, QWidget *parent = nullptr);
     ~TransactionListDialog();
@@ -43,22 +44,22 @@ class TransactionListDialog : public QDialog, public LibG::MessageHandler {
     inline bool isOk() { return mIsOk; }
     inline QVariantMap getData() { return mData; }
 
-  protected:
+protected:
     void messageReceived(LibG::Message *msg) override;
 
-  private:
+private:
     Ui::TransactionListDialog *ui;
     int mType = Cashier;
     bool mIsOk = false;
     std::function<void(QVariantMap)> mPrintFunction;
     QVariantMap mData;
 
-  private slots:
+private slots:
     void focusAndSelectTable();
     void printTransaction();
     void search();
     void showItems();
 };
 
-} // namespace LibGUI
+}
 #endif // TRANSACTIONLISTDIALOG_H
