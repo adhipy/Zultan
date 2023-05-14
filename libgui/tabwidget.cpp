@@ -47,13 +47,13 @@ TabWidget::TabWidget(int type, QWidget *parent):
         setLayout(lay);
     } else if(mType == Purchase) {
         setTabPosition(QTabWidget::West);
-        new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_PageDown), this, SLOT(nextTab()));
-        new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_PageUp), this, SLOT(prevTab()));
+        new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_PageDown), this, SLOT(nextTab()));
+        new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_PageUp), this, SLOT(prevTab()));
     } else {
         setTabPosition(QTabWidget::West);
-        new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_T), this, SLOT(newTab()));
-        new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_PageDown), this, SLOT(nextTab()));
-        new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_PageUp), this, SLOT(prevTab()));
+        new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_T), this, SLOT(newTab()));
+        new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_PageDown), this, SLOT(nextTab()));
+        new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_PageUp), this, SLOT(prevTab()));
     }
     setTabsClosable(true);
     connect(this, SIGNAL(tabCloseRequested(int)), SLOT(tbnRemoveTab(int)));

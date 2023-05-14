@@ -131,8 +131,8 @@ void MainWindow::setup()
     ui->actionUnits->setEnabled(UserSession::hasPermission(PERMISSION::UNIT));
     ui->actionSold_Return->setEnabled(UserSession::hasPermission(PERMISSION::CASHIER));
     //ui->action_Stock_Card->setEnabled(UserSession::hasPermission(PERMISSION::ADMINISTRATOR));
-    ui->action_Cashier->setShortcut(Qt::CTRL + Qt::Key_D);
-    ui->action_Items->setShortcut(Qt::CTRL + Qt::Key_I);
+    ui->action_Cashier->setShortcut(Qt::CTRL | Qt::Key_D);
+    ui->action_Items->setShortcut(Qt::CTRL | Qt::Key_I);
 #ifndef USE_DATE_SETTING
     ui->actionDate_Setting->setEnabled(false);
 #endif

@@ -141,7 +141,7 @@ void GuiUtil::print(const QString &data)
     uint16_t vendorId = (uint16_t)Preference::getInt(SETTING::PRINTER_CASHIER_VENDOR_ID);
     uint16_t produckId = (uint16_t)Preference::getInt(SETTING::PRINTER_CASHIER_PRODUK_ID);
     #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    QtConcurrent::run(&LibPrint::Printer::print, LibPrint::Printer::instance(),
+    QFuture<void> future = QtConcurrent::run(&LibPrint::Printer::print, LibPrint::Printer::instance(),
                       type == PRINT_TYPE::DEVICE ? prDevice : prName, data, type, vendorId, produckId);
     #else
     QtConcurrent::run(LibPrint::Printer::instance(), &LibPrint::Printer::print,

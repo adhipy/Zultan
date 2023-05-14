@@ -202,23 +202,40 @@ void TableModel::filterChanged(int index, const QVariant &value)
     const QString &key = mColumns[index];
     const HeaderFilter &filter = mHeaderFilter[key];
     if(filter.compare == FilterLike) {
+        #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        if(value.canConvert(QMetaType(QMetaType::QString)) && value.toString().isEmpty())
+        #else
         if(value.canConvert(QVariant::String) && value.toString().isEmpty())
+        #endif
             mQuery.removeFilter(key);
         else
             mQuery.setFilter(key, COMPARE::LIKE, value);
     } else if(filter.compare == FilterEQ) {
+        #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        if((value.canConvert(QMetaType(QMetaType::QString)) && value.toString().isEmpty()) ||
+                (value.canConvert(QMetaType(QMetaType::Int)) && value.toInt() < 0))
+        #else
         if((value.canConvert(QVariant::String) && value.toString().isEmpty()) ||
-                (value.canConvert(QVariant::Int) && value.toInt() < 0))
+            (value.canConvert(QVariant::Int) && value.toInt() < 0))
+        #endif
             mQuery.removeFilter(key);
         else
             mQuery.setFilter(key, COMPARE::EQUAL, value);
     } else if(filter.compare == FilterLikeNative) {
+        #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        if(value.canConvert(QMetaType(QMetaType::QString)) && value.toString().isEmpty())
+        #else
         if(value.canConvert(QVariant::String) && value.toString().isEmpty())
+        #endif
             mQuery.removeFilter(key);
         else
             mQuery.setFilter(key, COMPARE::LIKE_NATIVE, value);
     } else if(filter.compare == FilterBetweenDate) {
+        #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        if(value.canConvert(QMetaType(QMetaType::QVariantMap))) {
+        #else
         if(value.canConvert(QVariant::Map)) {
+        #endif
             const QVariantMap &map = value.toMap();
             if(!mDateTimeISO) {
                 mQuery.setFilter("0$" + key, COMPARE::GREATER_EQUAL, map["start"].toDateTime().toString("yyyy-MM-dd hh:mm:ss"));
@@ -229,8 +246,13 @@ void TableModel::filterChanged(int index, const QVariant &value)
             }
         }
     } else if(filter.compare == FilterCategory) {
+        #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        if((value.canConvert(QMetaType(QMetaType::QString)) && value.toString().isEmpty()) ||
+                (value.canConvert(QMetaType(QMetaType::Int)) && value.toInt() < 0))
+        #else
         if((value.canConvert(QVariant::String) && value.toString().isEmpty()) ||
-                (value.canConvert(QVariant::Int) && value.toInt() < 0))
+            (value.canConvert(QVariant::Int) && value.toInt() < 0))
+        #endif
             mQuery.removeFilter(key);
         else
             mQuery.setFilter(key, FILTER::CATEGORY_IN, value);
