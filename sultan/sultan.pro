@@ -10,7 +10,7 @@ CONFIG(USE_EMBED_BROWSER) {
     }
 }
 
-TARGET = Zultan
+TARGET = sultan
 TEMPLATE = app
 
 CONFIG += c++17
