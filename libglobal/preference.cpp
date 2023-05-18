@@ -97,7 +97,7 @@ void Preference::applyApplicationSetting()
 {
     QLocale locale((QLocale::Language)Preference::getInt(SETTING::LOCALE_LANGUAGE, QLocale::Indonesian),
                    (QLocale::Country)Preference::getInt(SETTING::LOCALE_COUNTRY, QLocale::Indonesia));
-    QLocale::setDefault(locale);
+    //QLocale::setDefault(locale); //PROBLEM APABILA DIPANGGIL SETELAH ADA MULTITHREAD (lihat documentation) by ADHIPY
 }
 
 QString Preference::formatMoney(double val)

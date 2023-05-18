@@ -34,6 +34,9 @@ int main(int argc, char *argv[])
     a.setOrganizationName("lekapin");
     a.setApplicationVersion("23.05.15");
 
+    QLocale locale(QLocale::Indonesian, QLocale::Indonesia);
+    QLocale::setDefault(locale);
+
 #ifndef QT_DEBUG
     QDir dir = QDir::home();
     dir.mkdir(".sultan");
