@@ -45,6 +45,7 @@ public:
     static QString formatMoney(int val);
     static QString formatMoney(float val);
     static QString formatFloat(float val);
+    static QString formatCount(float val);
 
 private:
     static Preference *instance();

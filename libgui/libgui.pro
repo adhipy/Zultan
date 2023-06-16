@@ -340,3 +340,6 @@ FORMS += \
     item/addingridientdialog.ui \
     report/datefromtowidget.ui \
     cashier/additemunavailabledialog.ui
+
+RESOURCES += \
+    sultan.qrc

@@ -512,12 +512,14 @@ void CashierWidget::printBill(const QVariantMap &data)
             continue;
         }
         const QString &note = m["note"].toString();
+		const QString &unit = m["unit"].toString();
         if(name.length() > escp->width()) name = name.left(escp->width());
         escp->leftText(name)->newLine();
         if(!note.isEmpty()) escp->leftText(QString("* %1").arg(note))->newLine();
-        QString s = QString("%1 x %2").
-                arg(Preference::formatFloat(count)).
-                 arg(Preference::formatMoney(m["price"].toDouble()));
+        QString s = QString("  %1 %2 x %3").
+                    arg(Preference::formatCount(count)).
+                    arg(unit).
+                    arg(Preference::formatMoney(m["price"].toDouble()));
         if(m["discount"].toDouble() != 0) {
             s = s % " (" % Preference::formatMoney(-discount) % ")";
         }

@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 #endif
     a.setApplicationName("sultan");
     a.setOrganizationName("lekapin");
-    a.setApplicationVersion("23.05.15");
+    a.setApplicationVersion("1.0.0+23.05.18");
 
     QLocale locale(QLocale::Indonesian, QLocale::Indonesia);
     QLocale::setDefault(locale);

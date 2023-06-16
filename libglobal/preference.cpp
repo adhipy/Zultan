@@ -20,6 +20,7 @@
 #include "preference.h"
 #include "global_setting_const.h"
 #include <QLocale>
+#include <cmath>
 
 //#define WIN_PORTABLE
 
@@ -118,4 +119,14 @@ QString Preference::formatMoney(float val)
 QString Preference::formatFloat(float val)
 {
     return QLocale().toString(val, 'f', 2);
+}
+
+QString Preference::formatCount(float val)
+{
+    float wholenumber, fraction;
+    fraction = std::modf(val,&wholenumber);
+    if(fraction == 0.0f)
+        return QLocale().toString((int)trunc(val));
+    else
+        return QLocale().toString(val, 'f', 2);
 }
